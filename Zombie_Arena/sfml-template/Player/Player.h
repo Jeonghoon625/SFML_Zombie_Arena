@@ -1,5 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include "../Wall/Wall.h"
+#include "../Bullet/Bullet.h"
 
 using namespace sf;
 
@@ -20,11 +22,8 @@ private:
 
 	int tileSize;
 
-	Vector2f prevDirection;
 	Vector2f direction;
-	float prevSpeed;
 	float speed;
-	float acc;
 
 	int health;
 	int maxHealth;
@@ -36,6 +35,7 @@ public:
 	Player();
 
 	void Spawn(IntRect arena, Vector2i res, int tileSize);
+	void Shoot(Vector2i mouseDir, float dgree, std::vector<Bullet*>& bullets);
 
 	bool OnHitted(Time timeHit);
 
@@ -46,7 +46,7 @@ public:
 	Sprite GetSprite() const;
 	int GetHealth() const;
 
-	void Update(float dt);
+	void Update(float dt, std::vector<Wall*> walls, std::vector<Bullet*>& bullets);
 
 	void GetHealthItem(int amount);
 

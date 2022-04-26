@@ -32,9 +32,10 @@ private:
 	static list<Keyboard::Key> ingKeys;
 	static list<Keyboard::Key> upKeys;
 
-
 public:
 	static void Init();
+	static void HorInit();
+	static void VerInit();
 
 	static void ClearInput();
 	static void ProcessInput(const Event& event);
@@ -49,5 +50,9 @@ public:
 	static bool GetKey(Keyboard::Key key);
 	static bool GetKeyUp(Keyboard::Key key);
 
+	static bool GetButtonDown(Mouse::Button button);
+	static bool GetButton(Mouse::Button button);
+	static bool GetButtonUp(Mouse::Button button);
+	
 	static Vector2i GetMousePosition();
 };

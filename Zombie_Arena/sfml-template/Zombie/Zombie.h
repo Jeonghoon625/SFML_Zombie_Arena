@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include "../Wall/Wall.h"
 
 using namespace sf;
 
@@ -39,7 +40,7 @@ public:
 	bool OnHitted();
 	bool IsALive();
 
-	void Spawn(ZombieTypes type, IntRect arena);
+	void Spawn(ZombieTypes type, IntRect arena, int x, int y, std::vector<Wall*> walls);
 	void Update(float dt, Vector2f playerPosition);
 
 	FloatRect GetGlobalBound();

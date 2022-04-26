@@ -13,6 +13,12 @@ void InputMgr::Init()
 {
 	mapAxis.clear();
 
+	HorInit();
+	VerInit();
+}
+
+void InputMgr::HorInit()
+{
 	AxisInfo info;
 	// Horizontal
 	info.axis = Axis::Horizontal;
@@ -26,6 +32,11 @@ void InputMgr::Init()
 	info.negativeKeys.push_back(Keyboard::A);
 	info.negativeKeys.push_back(Keyboard::Left);
 	mapAxis[info.axis] = info;
+}
+
+void InputMgr::VerInit()
+{
+	AxisInfo info;
 
 	// Vertical
 	info.axis = Axis::Vertical;
@@ -62,6 +73,20 @@ void InputMgr::ProcessInput(const Event& event)
 		ingKeys.remove(event.key.code);
 		upKeys.push_back(event.key.code);
 		break;
+
+	case Event::MouseButtonPressed:
+		if (!GetKey(event.key.code))
+		{
+			downKeys.push_back(event.key.code);
+			ingKeys.push_back(event.key.code);
+		}
+		break;
+
+	case Event::MouseButtonReleased:
+		ingKeys.remove(event.key.code);
+		upKeys.push_back(event.key.code);
+		break;
+	
 	default:
 		break;
 	}
@@ -170,6 +195,24 @@ bool InputMgr::GetKey(Keyboard::Key key)
 bool InputMgr::GetKeyUp(Keyboard::Key key)
 {
 	auto it = find(upKeys.begin(), upKeys.end(), key);
+	return it != upKeys.end();
+}
+
+bool InputMgr::GetButtonDown(Mouse::Button button)
+{
+	auto it = find(downKeys.begin(), downKeys.end(), button);
+	return it != downKeys.end();
+}
+
+bool InputMgr::GetButton(Mouse::Button button)
+{
+	auto it = find(ingKeys.begin(), ingKeys.end(), button);
+	return it != ingKeys.end();
+}
+
+bool InputMgr::GetButtonUp(Mouse::Button button)
+{
+	auto it = find(upKeys.begin(), upKeys.end(), button);
 	return it != upKeys.end();
 }
 

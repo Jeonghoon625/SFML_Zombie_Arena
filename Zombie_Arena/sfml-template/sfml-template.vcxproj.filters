@@ -14,6 +14,12 @@
     <Filter Include="Zombie">
       <UniqueIdentifier>{b3b9635f-448b-40d9-a512-fd579caaf226}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Bullet">
+      <UniqueIdentifier>{f91f0420-66dd-4d79-b8d7-7cf5af93895b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Wall">
+      <UniqueIdentifier>{21c67c6a-c424-424b-8123-6f20c0f325f7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Zombie_Arena.cpp" />
@@ -32,6 +38,12 @@
     <ClCompile Include="Zombie\Zombie.cpp">
       <Filter>Zombie</Filter>
     </ClCompile>
+    <ClCompile Include="Bullet\Bullet.cpp">
+      <Filter>Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="Wall\Wall.cpp">
+      <Filter>Wall</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Utils\InputMgr.h">
@@ -48,6 +60,12 @@
     </ClInclude>
     <ClInclude Include="Zombie\Zombie.h">
       <Filter>Zombie</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet\Bullet.h">
+      <Filter>Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Wall\Wall.h">
+      <Filter>Wall</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

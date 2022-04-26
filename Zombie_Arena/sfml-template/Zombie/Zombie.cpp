@@ -45,7 +45,7 @@ bool Zombie::IsALive()
 	return alive;
 }
 
-void Zombie::Spawn(ZombieTypes type, IntRect arena)
+void Zombie::Spawn(ZombieTypes type, IntRect arena, int x, int y, std::vector<Wall*> walls)
 {
 	auto& info = zombieInfo[(int)type];
 	sprite.setTexture(TextureHolder::GetTexture(info.textureFileName));
@@ -55,22 +55,41 @@ void Zombie::Spawn(ZombieTypes type, IntRect arena)
 	Utils::SetOrigin(sprite, Pivots::CC);
 	FloatRect zombieBounds = sprite.getGlobalBounds();
 
-	int offset_hori = zombieBounds.width * 0.5 + 50; 
-	int offset_verti = zombieBounds.height * 0.5 + 50;
-
-	int minX = arena.left + offset_hori;
-	int maxX = arena.width - offset_hori;
-	int minY = arena.top + offset_verti;
-	int maxY = arena.height - offset_verti;
-
-	int x = Utils::RandomRange(minX, maxX + 1);
-	int y = Utils::RandomRange(minY, maxY + 1);
-
 	position.x = x;
 	position.y = y;
-	
-	
 	sprite.setPosition(position);
+
+	//º®°ú °ãÄ¥½Ã ÁÂÇ¥ º¸Á¤
+	for (auto v : walls)
+	{
+		if (sprite.getGlobalBounds().intersects(v->GetWallRect()))
+		{
+			Pivots pivot = Utils::CollisionDir(v->GetWallRect(), sprite.getGlobalBounds());
+
+			switch (pivot)
+			{
+			case Pivots::LC:
+				position.x += (v->GetWallRect().left + v->GetWallRect().width) - (sprite.getGlobalBounds().left);
+				break;
+
+			case Pivots::RC:
+				position.x -= (sprite.getGlobalBounds().left + sprite.getGlobalBounds().width) - (v->GetWallRect().left);
+				break;
+
+			case Pivots::CT:
+				position.y += (v->GetWallRect().top + v->GetWallRect().height) - (sprite.getGlobalBounds().top);
+				break;
+
+			case Pivots::CB:
+				position.y -= (sprite.getGlobalBounds().top + sprite.getGlobalBounds().height) - (v->GetWallRect().top);
+				break;
+
+			defalut:
+				break;
+			}
+			sprite.setPosition(position);
+		}
+	}
 }
 
 void Zombie::Update(float dt, Vector2f playerPosition)
@@ -80,13 +99,7 @@ void Zombie::Update(float dt, Vector2f playerPosition)
 	float v = playerPosition.y - position.y;
 	Vector2f dir(h, v);
 
-	float length = sqrt(dir.x * dir.x + dir.y * dir.y);
-	if (length > 0)
-	{
-		dir /= length;
-	}
-
-	position += dir * speed * dt;
+	position += Utils::Normalize(dir) * speed * dt;
 	sprite.setPosition(position);
 
 	// È¸Àü

@@ -5,6 +5,8 @@
 #include "Utils/Utils.h"
 #include "Player/Player.h"
 #include "Zombie/Zombie.h"
+#include "Wall/Wall.h"
+#include "Bullet/Bullet.h"
 
 using namespace sf;
 using namespace std;
@@ -54,7 +56,7 @@ int CreateBackGround(VertexArray& va, IntRect arena)
 	return cols * rows;
 }
 
-void CreateZombies(std::vector<Zombie*>& zombies, int count, IntRect arena)
+void CreateZombies(std::vector<Zombie*>& zombies, int count, IntRect arena, std::vector <Wall*> walls)
 {
 	for (auto v : zombies)
 	{
@@ -62,14 +64,53 @@ void CreateZombies(std::vector<Zombie*>& zombies, int count, IntRect arena)
 	}
 	zombies.clear();
 
+	int offset = 25;
+	int minX = arena.left + offset;
+	int maxX = arena.width - offset;
+	int minY = arena.top + offset;
+	int maxY = arena.height - offset;
+
 	for (int i = 0; i < count; ++i)
 	{
+		int x = Utils::RandomRange(minX, maxX + 1);
+		int y = Utils::RandomRange(minY, maxY + 1);
 		ZombieTypes type = (ZombieTypes)Utils::RandomRange(0, (int)ZombieTypes::COUNT);
 		Zombie* zombie = new Zombie();
-		zombie->Spawn(type, arena);
+		zombie->Spawn(type, arena, x, y, walls);
 		zombies.push_back(zombie);
 	}
 }
+
+void CreateWalls(std::vector<Wall*>& walls, IntRect arena)
+{
+	for (auto v : walls)
+	{
+		delete v;
+	}
+
+	walls.clear();
+
+	int offset = 50;
+	Wall* wallUp = new Wall(0, arena.left, arena.width, offset);
+	walls.push_back(wallUp);
+	Wall* wallDown = new Wall(arena.top + arena.height - offset, arena.left, arena.width, offset);
+	walls.push_back(wallDown);
+	Wall* wallLeft = new Wall(offset, arena.left, offset, arena.height - 2 * offset);
+	walls.push_back(wallLeft);
+	Wall* wallRight = new Wall(offset, arena.left + arena.width - offset, offset, arena.height - 2 * offset);
+	walls.push_back(wallRight);
+}
+
+void CreateBullets(std::vector<Bullet*>& bullets)
+{
+	for (auto v : bullets)
+	{
+		delete v;
+	}
+
+	bullets.clear();
+}
+
 int main()
 {
 	TextureHolder textureHolder;
@@ -88,11 +129,17 @@ int main()
 	arena.width = 1000;
 	arena.height = 1000;
 
+	std::vector <Wall* > walls;
+	CreateWalls(walls, arena);
+
 	Player player;
 	player.Spawn(arena, resolution, 0.f);
 
 	std::vector<Zombie*> zombies;
-	CreateZombies(zombies, 50, arena);
+	CreateZombies(zombies, 50, arena, walls);
+
+	std::vector<Bullet*> bullets;
+	CreateBullets(bullets);
 
 	Clock clock;
 	
@@ -103,6 +150,7 @@ int main()
 	VertexArray tileMap;
 	CreateBackGround(tileMap, arena);
 
+	int i = 0;
 	while (window.isOpen())
 	{
 		Time dt = clock.restart();
@@ -120,13 +168,19 @@ int main()
 		}
 
 		InputMgr::Update(dt.asSeconds());
-		player.Update(dt.asSeconds());
+
+		player.Update(dt.asSeconds(), walls, bullets);
 
 		mainView.setCenter(player.GetPosition());
 
 		for (auto zombie : zombies)
 		{
-			//zombie->Update(dt.asSeconds(), player.GetPosition());
+			zombie->Update(dt.asSeconds(), player.GetPosition());
+		}
+
+		for (auto bullet : bullets)
+		{
+			bullet->Update(dt.asSeconds());
 		}
 		
 		window.clear();
@@ -137,6 +191,11 @@ int main()
 		for (auto zombie : zombies)
 		{
 			window.draw(zombie->GetSprite());
+		}
+
+		for (auto bullet : bullets)
+		{
+			window.draw(bullet->GetSprite());
 		}
 		
 		window.display();

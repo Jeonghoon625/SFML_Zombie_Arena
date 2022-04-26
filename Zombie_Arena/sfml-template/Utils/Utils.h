@@ -29,5 +29,9 @@ public:
 	static void SetOrigin(Transformable& tr, FloatRect bounds, Pivots preset);
 
 	static int RandomRange(int min, int excludeMax);
+
+	static Vector2f Normalize(Vector2f vector);
+
+	static Pivots CollisionDir(FloatRect standRect, FloatRect testRect);
 };
 

@@ -1,4 +1,6 @@
 #include "Utils.h"
+#include <iostream>
+#include <cmath>
 
 std::random_device Utils::rd;
 std::mt19937 Utils::gen(rd());
@@ -62,3 +64,46 @@ int Utils::RandomRange(int min, int excludeMax)
 	int range = excludeMax - min;
 	return min + gen() % range;
 }
+
+Vector2f Utils::Normalize(Vector2f v)
+{
+	float length = sqrt(v.x * v.x + v.y * v.y);
+	if (length > 0)
+	{
+		v /= length;
+	}
+
+	return v;
+}
+
+Pivots Utils::CollisionDir(FloatRect standRect, FloatRect testRect)
+{
+	//testRect를 기준
+
+	//testRect의 왼쪽
+	if (testRect.left < standRect.left + standRect.width
+		&& testRect.left + testRect.width > standRect.left + standRect.width)
+	{
+		return Pivots::LC;
+	}
+	//오른쪽
+	else if (testRect.left + testRect.width > standRect.left && testRect.left < standRect.left)
+	{
+		return Pivots::RC;
+	}
+
+	//위
+	else if (testRect.top < standRect.top + standRect.height && testRect.top + testRect.height > standRect.top + standRect.height)
+	{
+		return Pivots::CT;
+	}
+
+	//아래
+	else 
+	{
+		return Pivots::CB;
+	}
+
+	return Pivots();
+}
+
