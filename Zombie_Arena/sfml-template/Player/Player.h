@@ -57,7 +57,7 @@ public:
 	int GetHealth() const;
 
 	void Update(float dt, std::vector<Wall*> walls);
-
+	void Draw(RenderWindow& window);
 	void GetHealthItem(int amount);
 
 	void UpgradeSpeed();

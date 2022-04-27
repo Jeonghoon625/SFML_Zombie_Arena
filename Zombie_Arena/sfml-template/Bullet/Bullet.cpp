@@ -5,7 +5,8 @@
 
 Bullet::Bullet() : speed(DEFAULT_SPEED), isActive(false)
 {
-	shape.setSize(Vector2f(2, 2));
+	shape.setSize(Vector2f(50, 50));
+	Utils::SetOrigin(shape, Pivots::CC);
 }
 
 void Bullet::SetActive(bool active)
@@ -31,7 +32,7 @@ bool Bullet::IsActive()
 
 RectangleShape Bullet::GetShape()
 {
-	return RectangleShape();
+	return shape;
 }
 
 void Bullet::Update(float dt)

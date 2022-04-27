@@ -109,7 +109,7 @@ int main()
 	resolution.x = VideoMode::getDesktopMode().width;
 	resolution.y = VideoMode::getDesktopMode().height;
 
-	RenderWindow window(VideoMode(resolution.x, resolution.y), "Zombie Arena!", Style::Default);
+	RenderWindow window(VideoMode(resolution.x, resolution.y), "Zombie Arena!", Style::Fullscreen);
 
 	View mainView(FloatRect(0, 0, resolution.x, resolution.y));
 
@@ -168,13 +168,14 @@ int main()
 		window.clear();
 		window.setView(mainView);
 		window.draw(tileMap, &texBackground);
-		window.draw(player.GetSprite());
 		
 		for (auto zombie : zombies)
 		{
 			window.draw(zombie->GetSprite());
 		}
 		
+		player.Draw(window);
+
 		window.display();
 	}
 

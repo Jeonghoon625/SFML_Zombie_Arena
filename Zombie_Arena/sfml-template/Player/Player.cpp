@@ -4,6 +4,7 @@
 #include <cmath>
 #include <iostream>
 #include "../Utils/TextureHolder.h"
+#include <algorithm>
 
 Player::Player()
 	: speed(START_SPEED), health(START_HEALTH), maxHealth(START_HEALTH),
@@ -174,14 +175,34 @@ void Player::Update(float dt, std::vector <Wall*> walls)
 
 	if (InputMgr::GetMouseButtonDown(Mouse::Button::Left))
 	{
-		Shoot(dir);
+		Shoot(Utils::Normalize(Vector2f(mouseDir.x, mouseDir.y)));
 	}
 
+	auto it = useBullets.begin();
+	while (it != useBullets.end())
+	{
+		Bullet* bullet = *it;
+		bullet->Update(dt);
+
+		if (!bullet->IsActive())
+		{
+			it = useBullets.erase(it);
+		}
+		else
+		{
+			++it;
+		}
+	}
+}
+
+void Player::Draw(RenderWindow& window)
+{
+	window.draw(sprite);
 	for (auto bullet : useBullets)
 	{
-		bullet->Update(dt);
-		
+		window.draw(bullet->GetShape());
 	}
+
 }
 
 void Player::GetHealthItem(int amount)
