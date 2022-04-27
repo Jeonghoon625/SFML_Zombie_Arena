@@ -7,6 +7,7 @@
 #include "Zombie/Zombie.h"
 #include "Wall/Wall.h"
 #include "Bullet/Bullet.h"
+#include "PickUp/PickUp.h"
 
 using namespace sf;
 using namespace std;
@@ -119,6 +120,7 @@ int main()
 	Utils::SetOrigin(spriteCrosshair, Pivots::CC);
 
 	View mainView(FloatRect(0, 0, resolution.x, resolution.y));
+	View uiView(FloatRect(0, 0, resolution.x, resolution.y));
 
 	InputMgr::Init();
 
@@ -129,14 +131,23 @@ int main()
 	std::vector <Wall* > walls;
 	CreateWalls(walls, arena);
 
+	PickUp ammoPickup(PickUpTypes::Ammo);
+	PickUp healthPickup(PickUpTypes::Health);
+	ammoPickup.SetArena(arena);
+	healthPickup.SetArena(arena);
+
 	Player player;
 	player.Spawn(arena, resolution, 0.f);
 
 	std::vector<Zombie*> zombies;
 	CreateZombies(zombies, 200, arena, walls);
 
+	std::vector<PickUp*> items;
+	items.push_back(&ammoPickup);
+	items.push_back(&healthPickup);
+
 	Clock clock;
-	
+	Time playTime;
 	Texture& texBackground = TextureHolder::GetTexture("graphics/background_sheet.png");
 
 	texBackground.loadFromFile("graphics/background_sheet.png");
@@ -148,6 +159,8 @@ int main()
 	while (window.isOpen())
 	{
 		Time dt = clock.restart();
+		playTime += dt;
+
 		InputMgr::ClearInput();
 
 		Event event;
@@ -174,17 +187,41 @@ int main()
 		{
 			zombie->Update(dt.asSeconds(), player.GetPosition());
 		}
+
+		ammoPickup.Update(dt.asSeconds());
+		healthPickup.Update(dt.asSeconds());
 		
+		player.UpdateCollision(zombies);
+		for (auto zombie : zombies)
+		{
+			if (zombie->UpdateCollision(playTime, player))
+			{
+				break;
+			}
+		}
+		player.UpdateCollision(items);
+
 		window.clear();
 		window.setView(mainView);
 		window.draw(tileMap, &texBackground);
 		
+		if (ammoPickup.IsSpawned())
+		{
+			window.draw(ammoPickup.GetSprite());
+		}
+
+		if (healthPickup.IsSpawned())
+		{
+			window.draw(healthPickup.GetSprite());
+		}
+
 		for (auto zombie : zombies)
 		{
 			window.draw(zombie->GetSprite());
 		}
 		player.Draw(window);
 		window.draw(spriteCrosshair);
+		window.setView(uiView);
 		window.display();
 	}
 

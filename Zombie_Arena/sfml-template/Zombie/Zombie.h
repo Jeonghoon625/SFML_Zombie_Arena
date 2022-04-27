@@ -1,6 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include "../Wall/Wall.h"
+#include "../Player/Player.h"
 
 using namespace sf;
 
@@ -43,6 +44,7 @@ public:
 	void Spawn(ZombieTypes type, IntRect arena, int x, int y, std::vector<Wall*> walls);
 	void Update(float dt, Vector2f playerPosition);
 
+	bool UpdateCollision(Time time, Player& player);
 	FloatRect GetGlobalBound();
 	Sprite GetSprite();
 

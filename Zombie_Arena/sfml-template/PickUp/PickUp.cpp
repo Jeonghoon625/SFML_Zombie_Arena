@@ -1,18 +1,20 @@
 #include "PickUp.h"
 #include "../Utils/TextureHolder.h"
 #include "../Utils/Utils.h"
+#include <iostream>
+
 PickUp::PickUp(PickUpTypes type) : type(type)
 {
 	std::string textureId;
 	switch (this->type)
 	{
 	case PickUpTypes::Health:
-		textureId = "graphics/ammo_pickup.png";
+		textureId = "graphics/health_pickup.png";
 		value = AMMO_START_VALUE;
 		break;
 
 	case PickUpTypes::Ammo:
-		textureId = "graphics/health_pickup.png";
+		textureId = "graphics/ammo_pickup.png";
 		value = HEALTH_START_VALUE;
 		break;
 	}
@@ -26,6 +28,11 @@ PickUp::PickUp(PickUpTypes type) : type(type)
 
 void PickUp::Update(float dt)
 {
+	timer -= dt;
+	if (timer < 0.f)
+	{
+		Spawn(!spawned);
+	}
 }
 
 void PickUp::Spawn(bool spawn)
@@ -36,7 +43,8 @@ void PickUp::Spawn(bool spawn)
 		timer = START_SECONDS_FOR_LIVE;
 		int x = Utils::RandomRange(arena.left, arena.left + arena.width);
 		int y = Utils::RandomRange(arena.top, arena.top + arena.height);
-
+		
+		sprite.setPosition(Vector2f(x, y));
 	}
 	else
 	{
@@ -46,19 +54,39 @@ void PickUp::Spawn(bool spawn)
 
 int PickUp::GotIt()
 {
-	return 0;
+	switch (type)
+	{
+	case PickUpTypes::Ammo:
+		std::cout << "Ammo" << std::endl;
+		break;
+	case PickUpTypes::Health:
+		std::cout << "Health" << std::endl;
+		break;
+	}
+	return value;
+}
+
+FloatRect PickUp::GetGlobalBounds()
+{
+	return sprite.getGlobalBounds();
+}
+
+PickUpTypes PickUp::GetType()
+{
+	return type;
 }
 
 void PickUp::SetArena(IntRect rect)
 {
+	arena = rect;
 }
 
 bool PickUp::IsSpawned()
 {
-	return false;
+	return spawned;
 }
 
 Sprite PickUp::GetSprite()
 {
-	return Sprite();
+	return sprite;
 }

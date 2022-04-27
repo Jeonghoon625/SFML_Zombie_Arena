@@ -5,11 +5,12 @@
 #include <iostream>
 #include "../Utils/TextureHolder.h"
 #include <algorithm>
+#include "../PickUp/PickUp.h"
 
 Player::Player()
 	: speed(START_SPEED), health(START_HEALTH), maxHealth(START_HEALTH),
 	arena(), resolution(), tileSize(0.f), immuneMs(START_IMMUNE_MS), distanceToMuzzle(45.f),
-	texFileName("graphics/player.png")
+	texFileName("graphics/player.png"), timer(SHOOT_DELAY)
 {
 	sprite.setTexture(TextureHolder::GetTexture(texFileName));
 	Utils::SetOrigin(sprite, Pivots::CC);
@@ -52,8 +53,6 @@ void Player::Shoot(Vector2f dir)
 
 	useBullets.push_back(bullet);
 	bullet->Shoot(spawnPos, dir);
-
-	
 }
 
 void Player::Spawn(IntRect arena, Vector2i res, int tileSize)
@@ -69,7 +68,7 @@ void Player::Spawn(IntRect arena, Vector2i res, int tileSize)
 
 bool Player::OnHitted(Time timeHit)
 {
-	if (lastHit.asMicroseconds() - lastHit.asMicroseconds() > immuneMs)
+	if (timeHit.asMilliseconds() - lastHit.asMilliseconds() > immuneMs)
 	{
 		lastHit = timeHit;
 		health -= 10;
@@ -107,6 +106,36 @@ Sprite Player::GetSprite() const
 int Player::GetHealth() const
 {
 	return health;
+}
+
+bool Player::UpdateCollision(const std::vector<Zombie*>& zombies)
+{
+	bool isCollided = false;
+	for (auto bullet : useBullets)
+	{
+
+		if (bullet->UpdateCollision(zombies))
+		{
+			isCollided = true;
+		};
+	}
+	return isCollided;
+}
+
+bool Player::UpdateCollision(const std::vector<PickUp*>& items)
+{
+	FloatRect bounds = sprite.getGlobalBounds();
+	bool isCollided = false;
+	for (auto item : items)
+	{
+
+		if (bounds.intersects(item->GetGlobalBounds()))
+		{
+			item->GotIt();
+			isCollided = true;
+		};	
+	}
+	return isCollided;
 }
 
 void Player::Update(float dt, std::vector <Wall*> walls)
@@ -159,7 +188,6 @@ void Player::Update(float dt, std::vector <Wall*> walls)
 			defalut:
 				break;
 			}
-
 			sprite.setPosition(position);
 		}
 	}
@@ -173,9 +201,14 @@ void Player::Update(float dt, std::vector <Wall*> walls)
 	float dgree = radian * 180.f / 3.141592;
 	sprite.setRotation(dgree);
 
+	timer -= dt;
 	if (InputMgr::GetMouseButton(Mouse::Button::Left))
 	{
-		Shoot(Utils::Normalize(Vector2f(mouseDir.x, mouseDir.y)));
+		if (timer < 0)
+		{
+			Shoot(Utils::Normalize(Vector2f(mouseDir.x, mouseDir.y)));
+			timer = SHOOT_DELAY;
+		}
 	}
 
 	auto it = useBullets.begin();
@@ -187,6 +220,8 @@ void Player::Update(float dt, std::vector <Wall*> walls)
 		if (!bullet->IsActive())
 		{
 			it = useBullets.erase(it);
+			unuseBullets.push_back(bullet);
+
 		}
 		else
 		{

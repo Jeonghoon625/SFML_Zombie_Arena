@@ -3,10 +3,12 @@
 
 using namespace sf;
 
+class Zombie;
+
 class Bullet
 {
 private :
-	const float DEFAULT_SPEED = 2000.f;
+	const float DEFAULT_SPEED = 800.f;
 	const float DEFAULT_DISTANCE = 1000.f;
 
 	bool isActive;
@@ -17,6 +19,9 @@ private :
 	Vector2f direction;
 	float speed;
 	float distance;
+	Sprite sprite;
+
+	std::string textureFileName;
 
 public :
 	Bullet();
@@ -26,7 +31,8 @@ public :
 	void Update(float dt);
 	void Stop();
 	bool IsActive();
-
+	bool UpdateCollision(const std::vector<Zombie*>& zombies);
+	Sprite GetSprite();
 	RectangleShape GetShape();
 
 	

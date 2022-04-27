@@ -6,12 +6,16 @@
 
 using namespace sf;
 
+class PickUp;
+
 class Player
 {
 private:
 	const float START_SPEED = 200;
 	const float START_HEALTH = 100;
 	const float START_IMMUNE_MS = 200;
+
+	const float SHOOT_DELAY = 0.2f;
 
 	Vector2f position;
 
@@ -37,7 +41,8 @@ private:
 	std::list<Bullet*> useBullets;
 
 	float distanceToMuzzle;
-
+	
+	float timer;
 
 public:
 	Player();
@@ -56,6 +61,8 @@ public:
 	Sprite GetSprite() const;
 	int GetHealth() const;
 
+	bool UpdateCollision(const std::vector<Zombie*>& zombies);
+	bool UpdateCollision(const std::vector<PickUp*>& items);
 	void Update(float dt, std::vector<Wall*> walls);
 	void Draw(RenderWindow& window);
 	void GetHealthItem(int amount);

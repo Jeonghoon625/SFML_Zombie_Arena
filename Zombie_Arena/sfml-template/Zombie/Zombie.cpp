@@ -1,6 +1,7 @@
 #include "Zombie.h"
 #include "../Utils/TextureHolder.h"
 #include "../Utils/Utils.h"
+#include <iostream>
 
 std::vector<ZombieInfo> Zombie::zombieInfo;
 bool Zombie::isInitInfo = false;
@@ -37,6 +38,7 @@ Zombie::Zombie()
 
 bool Zombie::OnHitted()
 {
+	std::cout << "Hit" << std::endl;
 	return false;
 }
 
@@ -106,6 +108,14 @@ void Zombie::Update(float dt, Vector2f playerPosition)
 	float radian = atan2(dir.y, dir.x);
 	float dgree = radian * 180.f / 3.141592;
 	sprite.setRotation(dgree);
+}
+
+bool Zombie::UpdateCollision(Time time, Player& player)
+{
+	if (sprite.getGlobalBounds().intersects(player.GetGobalBound()))
+	{
+		return player.OnHitted(time);
+	}
 }
 
 FloatRect Zombie::GetGlobalBound()
