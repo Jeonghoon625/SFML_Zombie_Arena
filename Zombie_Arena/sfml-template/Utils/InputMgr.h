@@ -32,6 +32,11 @@ private:
 	static list<Keyboard::Key> ingKeys;
 	static list<Keyboard::Key> upKeys;
 
+	static list<Mouse::Button> downButtons;
+	static list<Mouse::Button> ingButtons;
+	static list<Mouse::Button> upButtons;
+
+
 public:
 	static void Init();
 	static void HorInit();
@@ -49,10 +54,10 @@ public:
 	static bool GetKeyDown(Keyboard::Key key);
 	static bool GetKey(Keyboard::Key key);
 	static bool GetKeyUp(Keyboard::Key key);
-
-	static bool GetButtonDown(Mouse::Button button);
-	static bool GetButton(Mouse::Button button);
-	static bool GetButtonUp(Mouse::Button button);
 	
 	static Vector2i GetMousePosition();
+
+	static bool GetMouseButtonDown(Mouse::Button button);
+	static bool GetMouseButton(Mouse::Button button);
+	static bool GetMouseButtonUp(Mouse::Button button);
 };

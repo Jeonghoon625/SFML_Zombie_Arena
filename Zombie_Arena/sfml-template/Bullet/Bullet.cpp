@@ -3,25 +3,51 @@
 #include "../Utils/Utils.h"
 #include "../Utils/InputMgr.h"
 
-Bullet::Bullet(Vector2i mouseDir, float dgree, Vector2f playerPosition) : texFileName("graphics/bullet.png"), dir(mouseDir), speed(1.f)
+Bullet::Bullet() : speed(DEFAULT_SPEED), isActive(false)
 {
-	this->dgree = dgree + 90;
+	shape.setSize(Vector2f(2, 2));
+}
 
-	sprite.setTexture(TextureHolder::GetTexture(texFileName));
-	Utils::SetOrigin(sprite, Pivots::CC);
+void Bullet::SetActive(bool active)
+{
+	isActive = active;
+}
 
-	sprite.setRotation(this->dgree);
+void Bullet::Shoot(Vector2f pos, Vector2f dir)
+{
+	SetActive(true);
 
-	position = playerPosition;
+	distance = 0.f;
+	position = pos;
+	direction = Utils::Normalize(dir);
+	float degree = Utils::GetAngel(position, position + direction);
+	shape.setPosition(position);
+}
+
+bool Bullet::IsActive()
+{
+	return isActive;
+}
+
+RectangleShape Bullet::GetShape()
+{
+	return RectangleShape();
 }
 
 void Bullet::Update(float dt)
 {
-	position += dir * speed * dt;
-	sprite.setPosition(position);
+	position += direction * speed * dt;
+	shape.setPosition(position);
+
+	distance += speed * dt;
+
+	if (distance > DEFAULT_DISTANCE)
+	{
+		Stop();
+	}
 }
 
-Sprite Bullet::GetSprite()
+void Bullet::Stop()
 {
-	return sprite;
+	SetActive(false);
 }

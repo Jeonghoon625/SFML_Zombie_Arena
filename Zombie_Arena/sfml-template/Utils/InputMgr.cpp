@@ -9,6 +9,10 @@ list<Keyboard::Key> InputMgr::downKeys;
 list<Keyboard::Key> InputMgr::ingKeys;
 list<Keyboard::Key> InputMgr::upKeys;
 
+list<Mouse::Button>  InputMgr::downButtons;
+list<Mouse::Button>  InputMgr::ingButtons;
+list<Mouse::Button>  InputMgr::upButtons;
+
 void InputMgr::Init()
 {
 	mapAxis.clear();
@@ -56,6 +60,8 @@ void InputMgr::ClearInput()
 {
 	downKeys.clear();
 	upKeys.clear();
+	downButtons.clear();
+	upButtons.clear();
 }
 
 void InputMgr::ProcessInput(const Event& event)
@@ -73,20 +79,11 @@ void InputMgr::ProcessInput(const Event& event)
 		ingKeys.remove(event.key.code);
 		upKeys.push_back(event.key.code);
 		break;
-
 	case Event::MouseButtonPressed:
-		if (!GetKey(event.key.code))
-		{
-			downKeys.push_back(event.key.code);
-			ingKeys.push_back(event.key.code);
-		}
+		downButtons.push_back(event.mouseButton.button);
 		break;
-
 	case Event::MouseButtonReleased:
-		ingKeys.remove(event.key.code);
-		upKeys.push_back(event.key.code);
 		break;
-	
 	default:
 		break;
 	}
@@ -198,25 +195,23 @@ bool InputMgr::GetKeyUp(Keyboard::Key key)
 	return it != upKeys.end();
 }
 
-bool InputMgr::GetButtonDown(Mouse::Button button)
-{
-	auto it = find(downKeys.begin(), downKeys.end(), button);
-	return it != downKeys.end();
-}
-
-bool InputMgr::GetButton(Mouse::Button button)
-{
-	auto it = find(ingKeys.begin(), ingKeys.end(), button);
-	return it != ingKeys.end();
-}
-
-bool InputMgr::GetButtonUp(Mouse::Button button)
-{
-	auto it = find(upKeys.begin(), upKeys.end(), button);
-	return it != upKeys.end();
-}
-
 Vector2i InputMgr::GetMousePosition()
 {
 	return Mouse::getPosition();
+}
+
+bool InputMgr::GetMouseButtonDown(Mouse::Button button)
+{
+	auto it = find(downButtons.begin(), downButtons.end(), button);
+	return it != downButtons.end();
+}
+
+bool InputMgr::GetMouseButton(Mouse::Button button)
+{
+	return false;
+}
+
+bool InputMgr::GetMouseButtonUp(Mouse::Button button)
+{
+	return false;
 }

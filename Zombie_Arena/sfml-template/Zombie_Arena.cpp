@@ -64,7 +64,7 @@ void CreateZombies(std::vector<Zombie*>& zombies, int count, IntRect arena, std:
 	}
 	zombies.clear();
 
-	int offset = 25;
+	int offset = 50;
 	int minX = arena.left + offset;
 	int maxX = arena.width - offset;
 	int minY = arena.top + offset;
@@ -101,16 +101,6 @@ void CreateWalls(std::vector<Wall*>& walls, IntRect arena)
 	walls.push_back(wallRight);
 }
 
-void CreateBullets(std::vector<Bullet*>& bullets)
-{
-	for (auto v : bullets)
-	{
-		delete v;
-	}
-
-	bullets.clear();
-}
-
 int main()
 {
 	TextureHolder textureHolder;
@@ -136,10 +126,7 @@ int main()
 	player.Spawn(arena, resolution, 0.f);
 
 	std::vector<Zombie*> zombies;
-	CreateZombies(zombies, 50, arena, walls);
-
-	std::vector<Bullet*> bullets;
-	CreateBullets(bullets);
+	CreateZombies(zombies, 200, arena, walls);
 
 	Clock clock;
 	
@@ -169,18 +156,13 @@ int main()
 
 		InputMgr::Update(dt.asSeconds());
 
-		player.Update(dt.asSeconds(), walls, bullets);
+		player.Update(dt.asSeconds(), walls);
 
 		mainView.setCenter(player.GetPosition());
 
 		for (auto zombie : zombies)
 		{
 			zombie->Update(dt.asSeconds(), player.GetPosition());
-		}
-
-		for (auto bullet : bullets)
-		{
-			bullet->Update(dt.asSeconds());
 		}
 		
 		window.clear();
@@ -191,11 +173,6 @@ int main()
 		for (auto zombie : zombies)
 		{
 			window.draw(zombie->GetSprite());
-		}
-
-		for (auto bullet : bullets)
-		{
-			window.draw(bullet->GetSprite());
 		}
 		
 		window.display();

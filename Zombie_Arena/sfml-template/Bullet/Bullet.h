@@ -6,16 +6,29 @@ using namespace sf;
 class Bullet
 {
 private :
-	Sprite sprite;
-	std::string texFileName;
-	Vector2f dir;
-	float dgree;
-	float speed;
+	const float DEFAULT_SPEED = 2000.f;
+	const float DEFAULT_DISTANCE = 1500.f;
+
+	bool isActive;
+
+	RectangleShape shape;
+
 	Vector2f position;
+	Vector2f direction;
+	float speed;
+	float distance;
 
 public :
-	Bullet(Vector2i mouseDir, float dgree, Vector2f playerPosition);
+	Bullet();
+
+	void SetActive(bool active);
+	void Shoot(Vector2f pos, Vector2f dir);
 	void Update(float dt);
-	Sprite GetSprite();
+	void Stop();
+	bool IsActive();
+
+	RectangleShape GetShape();
+
+	
 };
 

@@ -7,12 +7,52 @@
 
 Player::Player()
 	: speed(START_SPEED), health(START_HEALTH), maxHealth(START_HEALTH),
-	arena(), resolution(), tileSize(0.f), immuneMs(START_IMMUNE_MS),
+	arena(), resolution(), tileSize(0.f), immuneMs(START_IMMUNE_MS), distanceToMuzzle(45.f),
 	texFileName("graphics/player.png")
 {
 	sprite.setTexture(TextureHolder::GetTexture(texFileName));
-	//sprite.setTextureRect(sf::IntRect(sprite.getGlobalBounds().width, 0, -sprite.getGlobalBounds().width, sprite.getGlobalBounds().height));*/
 	Utils::SetOrigin(sprite, Pivots::CC);
+
+	for (int i = 0; i < BULLET_CACHE_SIZE; ++i)
+	{
+		unuseBullets.push_back(new Bullet());
+	}
+}
+
+Player::~Player()
+{
+	for (auto bullet : unuseBullets)
+	{
+		delete bullet;
+	}
+	unuseBullets.clear();
+
+	for (auto bullet : useBullets)
+	{
+		delete bullet;
+	}
+	useBullets.clear();
+}
+
+void Player::Shoot(Vector2f dir)
+{
+	Vector2f spawnPos = position + dir * distanceToMuzzle;
+
+	if (unuseBullets.empty())
+	{
+		for (int i = 0; i < BULLET_CACHE_SIZE; ++i)
+		{
+			unuseBullets.push_back(new Bullet());
+		}
+	}
+
+	Bullet* bullet = unuseBullets.front();
+	unuseBullets.pop_front();
+
+	useBullets.push_back(bullet);
+	bullet->Shoot(spawnPos, dir);
+
+	
 }
 
 void Player::Spawn(IntRect arena, Vector2i res, int tileSize)
@@ -24,12 +64,6 @@ void Player::Spawn(IntRect arena, Vector2i res, int tileSize)
 	position.x = arena.width * 0.5f;
 	position.y = arena.height * 0.5f;
 	sprite.setPosition(position.x, position.y);
-}
-
-void Player::Shoot(Vector2i mouseDir, float dgree, std::vector<Bullet*>& bullets)
-{
-	Bullet* bullet = new Bullet(mouseDir, dgree, GetPosition());
-	bullets.push_back(bullet);
 }
 
 bool Player::OnHitted(Time timeHit)
@@ -74,7 +108,7 @@ int Player::GetHealth() const
 	return health;
 }
 
-void Player::Update(float dt, std::vector <Wall*> walls, std::vector<Bullet*>& bullets)
+void Player::Update(float dt, std::vector <Wall*> walls)
 {
 	// ¿Ãµø
 	float h = InputMgr::GetAxis(Axis::Horizontal);
@@ -138,10 +172,15 @@ void Player::Update(float dt, std::vector <Wall*> walls, std::vector<Bullet*>& b
 	float dgree = radian * 180.f / 3.141592;
 	sprite.setRotation(dgree);
 
-	//√— πﬂªÁ
-	if (InputMgr::GetButtonDown(Mouse::Left))
+	if (InputMgr::GetMouseButtonDown(Mouse::Button::Left))
 	{
-		Shoot(mouseDir, dgree, bullets);
+		Shoot(dir);
+	}
+
+	for (auto bullet : useBullets)
+	{
+		bullet->Update(dt);
+		
 	}
 }
 

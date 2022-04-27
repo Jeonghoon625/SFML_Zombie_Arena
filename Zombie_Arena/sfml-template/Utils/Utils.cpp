@@ -65,17 +65,6 @@ int Utils::RandomRange(int min, int excludeMax)
 	return min + gen() % range;
 }
 
-Vector2f Utils::Normalize(Vector2f v)
-{
-	float length = sqrt(v.x * v.x + v.y * v.y);
-	if (length > 0)
-	{
-		v /= length;
-	}
-
-	return v;
-}
-
 Pivots Utils::CollisionDir(FloatRect standRect, FloatRect testRect)
 {
 	//testRect¸¦ ±âÁØ
@@ -107,3 +96,27 @@ Pivots Utils::CollisionDir(FloatRect standRect, FloatRect testRect)
 	return Pivots();
 }
 
+float Utils::GetLength(const Vector2f& vector)
+{
+	return sqrt(vector.x * vector.x + vector.y * vector.y);
+}
+
+Vector2f Utils::Normalize(const Vector2f& vector)
+{
+	Vector2f v = vector;
+	float length = GetLength(vector);
+
+	if (length > 0)
+	{
+		v /= length;
+	}
+
+	return v;
+}
+
+float Utils::GetAngel(const Vector2f& from, const Vector2f& to)
+{
+	Vector2f dir = to - from;
+	float radian = atan2(dir.y, dir.x);
+	return radian * 180.f / 3.141592;
+}

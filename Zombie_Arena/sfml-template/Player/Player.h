@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include "../Wall/Wall.h"
 #include "../Bullet/Bullet.h"
+#include <list>
 
 using namespace sf;
 
@@ -31,11 +32,20 @@ private:
 
 	Time lastHit;
 
+	const int BULLET_CACHE_SIZE = 1000;
+	std::list<Bullet*> unuseBullets;
+	std::list<Bullet*> useBullets;
+
+	float distanceToMuzzle;
+
+
 public:
 	Player();
+	~Player();
+
+	void Shoot(Vector2f dir);
 
 	void Spawn(IntRect arena, Vector2i res, int tileSize);
-	void Shoot(Vector2i mouseDir, float dgree, std::vector<Bullet*>& bullets);
 
 	bool OnHitted(Time timeHit);
 
@@ -46,7 +56,7 @@ public:
 	Sprite GetSprite() const;
 	int GetHealth() const;
 
-	void Update(float dt, std::vector<Wall*> walls, std::vector<Bullet*>& bullets);
+	void Update(float dt, std::vector<Wall*> walls);
 
 	void GetHealthItem(int amount);
 
