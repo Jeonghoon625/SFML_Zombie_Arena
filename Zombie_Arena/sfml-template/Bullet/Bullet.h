@@ -7,7 +7,7 @@ class Bullet
 {
 private :
 	const float DEFAULT_SPEED = 2000.f;
-	const float DEFAULT_DISTANCE = 1500.f;
+	const float DEFAULT_DISTANCE = 1000.f;
 
 	bool isActive;
 

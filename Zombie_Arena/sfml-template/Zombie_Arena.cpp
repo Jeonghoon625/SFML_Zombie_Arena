@@ -109,7 +109,14 @@ int main()
 	resolution.x = VideoMode::getDesktopMode().width;
 	resolution.y = VideoMode::getDesktopMode().height;
 
-	RenderWindow window(VideoMode(resolution.x, resolution.y), "Zombie Arena!", Style::Fullscreen);
+	RenderWindow window(VideoMode(resolution.x, resolution.y), "Zombie Arena!", Style::Default);
+
+	window.setMouseCursorVisible(false);
+
+	Sprite spriteCrosshair;
+	Texture textureCrosshair = TextureHolder::GetTexture("graphics/crosshair.png");
+	spriteCrosshair.setTexture(textureCrosshair);
+	Utils::SetOrigin(spriteCrosshair, Pivots::CC);
 
 	View mainView(FloatRect(0, 0, resolution.x, resolution.y));
 
@@ -144,6 +151,7 @@ int main()
 		InputMgr::ClearInput();
 
 		Event event;
+
 		while (window.pollEvent(event))
 		{
 			if (event.type == Event::Closed)
@@ -154,10 +162,12 @@ int main()
 			InputMgr::ProcessInput(event);
 		}
 
-		InputMgr::Update(dt.asSeconds());
+		InputMgr::ProcessInput(event);
 
+		InputMgr::Update(dt.asSeconds(), window, mainView);
+
+		spriteCrosshair.setPosition(InputMgr::GetMouseWorldPosition());
 		player.Update(dt.asSeconds(), walls);
-
 		mainView.setCenter(player.GetPosition());
 
 		for (auto zombie : zombies)
@@ -173,9 +183,8 @@ int main()
 		{
 			window.draw(zombie->GetSprite());
 		}
-		
 		player.Draw(window);
-
+		window.draw(spriteCrosshair);
 		window.display();
 	}
 

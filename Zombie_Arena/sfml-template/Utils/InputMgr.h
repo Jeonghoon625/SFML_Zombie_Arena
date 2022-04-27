@@ -36,15 +36,16 @@ private:
 	static list<Mouse::Button> ingButtons;
 	static list<Mouse::Button> upButtons;
 
+	static Vector2i mousePosition;
+	static Vector2f mousePositionWorld;
 
 public:
 	static void Init();
 	static void HorInit();
 	static void VerInit();
-
 	static void ClearInput();
 	static void ProcessInput(const Event& event);
-	static void Update(float dt);
+	static void Update(float dt, RenderWindow& window, View& worldView);
 
 	static float GetAxis(Axis axis);	// -1.0 ~ 1.0
 
@@ -56,8 +57,11 @@ public:
 	static bool GetKeyUp(Keyboard::Key key);
 	
 	static Vector2i GetMousePosition();
+	static Vector2f GetMouseWorldPosition();
 
 	static bool GetMouseButtonDown(Mouse::Button button);
 	static bool GetMouseButton(Mouse::Button button);
 	static bool GetMouseButtonUp(Mouse::Button button);
+
+	
 };

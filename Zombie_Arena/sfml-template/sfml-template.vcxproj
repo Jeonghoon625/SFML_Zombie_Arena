@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Bullet\Bullet.cpp" />
+    <ClCompile Include="PickUp\PickUp.cpp" />
     <ClCompile Include="Player\Player.cpp" />
     <ClCompile Include="Utils\InputMgr.cpp" />
     <ClCompile Include="Utils\TextureHolder.cpp" />
@@ -30,6 +31,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bullet\Bullet.h" />
+    <ClInclude Include="PickUp\PickUp.h" />
     <ClInclude Include="Player\Player.h" />
     <ClInclude Include="Utils\InputMgr.h" />
     <ClInclude Include="Utils\TextureHolder.h" />

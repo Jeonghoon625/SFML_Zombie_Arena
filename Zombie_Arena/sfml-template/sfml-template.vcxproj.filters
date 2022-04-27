@@ -20,6 +20,9 @@
     <Filter Include="Wall">
       <UniqueIdentifier>{21c67c6a-c424-424b-8123-6f20c0f325f7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="PickUp">
+      <UniqueIdentifier>{a4fdd512-abfc-4f73-aa7d-ba05d5aecf58}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Zombie_Arena.cpp" />
@@ -44,6 +47,9 @@
     <ClCompile Include="Wall\Wall.cpp">
       <Filter>Wall</Filter>
     </ClCompile>
+    <ClCompile Include="PickUp\PickUp.cpp">
+      <Filter>PickUp</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Utils\InputMgr.h">
@@ -66,6 +72,9 @@
     </ClInclude>
     <ClInclude Include="Wall\Wall.h">
       <Filter>Wall</Filter>
+    </ClInclude>
+    <ClInclude Include="PickUp\PickUp.h">
+      <Filter>PickUp</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

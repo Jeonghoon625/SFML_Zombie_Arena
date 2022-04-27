@@ -173,7 +173,7 @@ void Player::Update(float dt, std::vector <Wall*> walls)
 	float dgree = radian * 180.f / 3.141592;
 	sprite.setRotation(dgree);
 
-	if (InputMgr::GetMouseButtonDown(Mouse::Button::Left))
+	if (InputMgr::GetMouseButton(Mouse::Button::Left))
 	{
 		Shoot(Utils::Normalize(Vector2f(mouseDir.x, mouseDir.y)));
 	}
