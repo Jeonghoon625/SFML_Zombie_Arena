@@ -38,8 +38,8 @@ Zombie::Zombie()
 
 bool Zombie::OnHitted()
 {
-	std::cout << "Hit" << std::endl;
-	return false;
+	health -= 10;
+	return true;
 }
 
 bool Zombie::IsALive()
@@ -96,6 +96,9 @@ void Zombie::Spawn(ZombieTypes type, IntRect arena, int x, int y, std::vector<Wa
 
 void Zombie::Update(float dt, Vector2f playerPosition)
 {
+	//살아있는지 죽었는지
+	
+
 	// 이동
 	float h = playerPosition.x - position.x;
 	float v = playerPosition.y - position.y;

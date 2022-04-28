@@ -1,4 +1,5 @@
 ﻿#include <iostream>
+#include <sstream>
 #include "SFML/Graphics.hpp"
 #include "Utils/TextureHolder.h"
 #include "Utils/InputMgr.h"
@@ -8,6 +9,7 @@
 #include "Wall/Wall.h"
 #include "Bullet/Bullet.h"
 #include "PickUp/PickUp.h"
+#include "Utils/UIMgr.h"
 
 using namespace sf;
 using namespace std;
@@ -140,14 +142,58 @@ int main()
 	player.Spawn(arena, resolution, 0.f);
 
 	std::vector<Zombie*> zombies;
-	CreateZombies(zombies, 200, arena, walls);
+	CreateZombies(zombies, 20, arena, walls);
 
 	std::vector<PickUp*> items;
 	items.push_back(&ammoPickup);
 	items.push_back(&healthPickup);
 
+	// 재장전 테스트용 //
+	Font fontZombiecontrol;
+	fontZombiecontrol.loadFromFile("fonts/zombiecontrol.ttf");
+
+	Text textAmmunition;
+	textAmmunition.setFont(fontZombiecontrol);
+	textAmmunition.setString("ammunition = 120");
+	textAmmunition.setFillColor(Color::White);
+	textAmmunition.setCharacterSize(50);
+	textAmmunition.setPosition(0, 0);
+
+	Text textMagazine;
+	textMagazine.setFont(fontZombiecontrol);
+	textMagazine.setString("magazine = 12");
+	textMagazine.setFillColor(Color::White);
+	textMagazine.setCharacterSize(50);
+	textMagazine.setPosition(0, 50);
+
+	Text textReload;
+	textReload.setFont(fontZombiecontrol);
+	textReload.setString("Reload..");
+	textReload.setFillColor(Color::Yellow);
+	textReload.setCharacterSize(20);
+
+	FloatRect reloadRect = textReload.getGlobalBounds();
+	textReload.setOrigin(
+		reloadRect.left + reloadRect.width * 0.5f,
+		reloadRect.top + reloadRect.height * 0.5f
+	);
+	textReload.setPosition(resolution.x * 0.5f, resolution.y * 0.5f - 30.f);
+	//////////////////////
+	RectangleShape healthBar;
+
+	float healthBarwidth = player.GetHealth() * 3;
+	float healthBarheight = 50;
+	Vector2f healthBarsize = Vector2f(healthBarwidth, healthBarheight);
+
+	healthBar.setFillColor(Color::Red);
+	///////////////
+
+
 	Clock clock;
 	Time playTime;
+	healthBar.setSize(healthBarsize);
+	Vector2f healthPos = Vector2f(resolution.x * 0.4f - healthBarwidth * 0.4f, resolution.y - 140.f);
+	healthBar.setPosition(healthPos);
 	Texture& texBackground = TextureHolder::GetTexture("graphics/background_sheet.png");
 
 	texBackground.loadFromFile("graphics/background_sheet.png");
@@ -155,9 +201,14 @@ int main()
 	VertexArray tileMap;
 	CreateBackGround(tileMap, arena);
 
-	int i = 0;
+
+	UIMgr ui;
+	ui.UiPlayInit(uiView);
+	ui.UiMenuInit(uiView);
+
 	while (window.isOpen())
 	{
+		
 		Time dt = clock.restart();
 		playTime += dt;
 
@@ -201,7 +252,23 @@ int main()
 		}
 		player.UpdateCollision(items);
 
+		float healthBarwidth = player.GetHealth() * 3;
+		healthBarsize.x = healthBarwidth;
+		healthBar.setSize(healthBarsize);
+
+		// Shoot Counting
+		stringstream am;
+		am << "Ammunition = " << Player::ammunition;
+		textAmmunition.setString(am.str());
+
+		stringstream mg;
+		mg << "Magazine = " << Player::magazine;
+		textMagazine.setString(mg.str());
+		//
+
 		window.clear();
+		
+		/*
 		window.setView(mainView);
 		window.draw(tileMap, &texBackground);
 		
@@ -222,7 +289,28 @@ int main()
 		player.Draw(window);
 		window.draw(spriteCrosshair);
 		window.setView(uiView);
+
+		// 재장전 테스트용 //
+		window.draw(textAmmunition);
+		window.draw(textMagazine);
+
+		if (player.GetIsReload())
+		{
+			window.draw(textReload);
+		}
+		///////////////////// 
+		window.draw(healthBar);
+		ui.UiPlayUpdate(player);
+		ui.UiPlayDraw(window);
+		*/
+		ui.UiPlayUpdate(player);
+		ui.UiMenuUpdate(player);
+
+		ui.UiPlayDraw(window);
+		ui.UiMenuDraw(window);
+		
 		window.display();
+		
 	}
 
 	return 0;

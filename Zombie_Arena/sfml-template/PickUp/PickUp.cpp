@@ -41,10 +41,54 @@ void PickUp::Spawn(bool spawn)
 	if (spawned)
 	{
 		timer = START_SECONDS_FOR_LIVE;
-		int x = Utils::RandomRange(arena.left, arena.left + arena.width);
-		int y = Utils::RandomRange(arena.top, arena.top + arena.height);
-		
-		sprite.setPosition(Vector2f(x, y));
+
+		int offset = 50;
+		int minX = arena.left + offset;
+		int maxX = arena.width - offset;
+		int minY = arena.top + offset;
+		int maxY = arena.height - offset;
+
+		int x = Utils::RandomRange(minX, maxX + 1);
+		int y = Utils::RandomRange(minY, maxY + 1);
+
+		Vector2f position;
+
+		position.x = x;
+		position.y = y;
+		sprite.setPosition(position);
+
+		for (auto v : walls)
+		{
+			if (sprite.getGlobalBounds().intersects(v->GetWallRect()))
+			{
+				Pivots pivot = Utils::CollisionDir(v->GetWallRect(), sprite.getGlobalBounds());
+
+				switch (pivot)
+				{
+				case Pivots::LC:
+					position.x += (v->GetWallRect().left + v->GetWallRect().width) - (sprite.getGlobalBounds().left);
+					break;
+
+				case Pivots::RC:
+					position.x -= (sprite.getGlobalBounds().left + sprite.getGlobalBounds().width) - (v->GetWallRect().left);
+					break;
+
+				case Pivots::CT:
+					position.y += (v->GetWallRect().top + v->GetWallRect().height) - (sprite.getGlobalBounds().top);
+					break;
+
+				case Pivots::CB:
+					position.y -= (sprite.getGlobalBounds().top + sprite.getGlobalBounds().height) - (v->GetWallRect().top);
+					break;
+
+				defalut:
+					break;
+				}
+				sprite.setPosition(position);
+			}
+		}
+
+		//sprite.setPosition(Vector2f(x, y));
 	}
 	else
 	{
@@ -57,10 +101,10 @@ int PickUp::GotIt()
 	switch (type)
 	{
 	case PickUpTypes::Ammo:
-		std::cout << "Ammo" << std::endl;
+		Spawn(false);
 		break;
 	case PickUpTypes::Health:
-		std::cout << "Health" << std::endl;
+		Spawn(false);
 		break;
 	}
 	return value;
@@ -90,3 +134,9 @@ Sprite PickUp::GetSprite()
 {
 	return sprite;
 }
+
+void PickUp::Setwalls(std::vector<Wall*> vectorWalls)
+{
+	walls = vectorWalls;
+}
+

@@ -48,5 +48,7 @@ public:
 	FloatRect GetGlobalBound();
 	Sprite GetSprite();
 
+	static int ammunition;   // 가지고 있는 총 탄환 수
+	static int magazine;   // 탄창 안의 탄환 수
 };
 

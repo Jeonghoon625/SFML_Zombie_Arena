@@ -7,10 +7,13 @@
 #include <algorithm>
 #include "../PickUp/PickUp.h"
 
+int Player::ammunition;
+int Player::magazine;
+
 Player::Player()
 	: speed(START_SPEED), health(START_HEALTH), maxHealth(START_HEALTH),
 	arena(), resolution(), tileSize(0.f), immuneMs(START_IMMUNE_MS), distanceToMuzzle(45.f),
-	texFileName("graphics/player.png"), timer(SHOOT_DELAY)
+	texFileName("graphics/player.png"), shootTimer(SHOOT_DELAY), reloadTime(RELOAD_INTERBAL), isReload(false)
 {
 	sprite.setTexture(TextureHolder::GetTexture(texFileName));
 	Utils::SetOrigin(sprite, Pivots::CC);
@@ -19,6 +22,9 @@ Player::Player()
 	{
 		unuseBullets.push_back(new Bullet());
 	}
+
+	ammunition = START_AMMOUNITION;
+	magazine = MAX_MAGAZINE;
 }
 
 Player::~Player()
@@ -71,7 +77,16 @@ bool Player::OnHitted(Time timeHit)
 	if (timeHit.asMilliseconds() - lastHit.asMilliseconds() > immuneMs)
 	{
 		lastHit = timeHit;
-		health -= 10;
+		if (health > 0)
+		{
+			health -= 10;
+		}
+		
+		if (isReload == true)
+		{
+			reloadTime = RELOAD_INTERBAL;
+			SetIsReload(false);
+		}
 		return true;
 	}
 
@@ -133,7 +148,7 @@ bool Player::UpdateCollision(const std::vector<PickUp*>& items)
 		{
 			item->GotIt();
 			isCollided = true;
-		};	
+		};
 	}
 	return isCollided;
 }
@@ -142,7 +157,7 @@ void Player::Update(float dt, std::vector <Wall*> walls)
 {
 	// 이동
 	float h = InputMgr::GetAxis(Axis::Horizontal);
-	float v= InputMgr::GetAxis(Axis::Vertical);
+	float v = InputMgr::GetAxis(Axis::Vertical);
 	Vector2f dir(h, v);
 
 	float length = sqrt(dir.x * dir.x + dir.y * dir.y);
@@ -201,13 +216,44 @@ void Player::Update(float dt, std::vector <Wall*> walls)
 	float dgree = radian * 180.f / 3.141592;
 	sprite.setRotation(dgree);
 
-	timer -= dt;
-	if (InputMgr::GetMouseButton(Mouse::Button::Left))
+	//총알 발사
+	shootTimer -= dt;
+	if (InputMgr::GetMouseButton(Mouse::Button::Left) && !isReload)
 	{
-		if (timer < 0)
+		if (shootTimer < 0 && magazine > 0)
 		{
 			Shoot(Utils::Normalize(Vector2f(mouseDir.x, mouseDir.y)));
-			timer = SHOOT_DELAY;
+			magazine--;
+			shootTimer = SHOOT_DELAY;
+		}
+	}
+
+
+	//총알 재장전
+	if (InputMgr::GetKeyDown(Keyboard::R) && magazine < MAX_MAGAZINE)
+	{
+		SetIsReload(true);
+	}
+
+	if (isReload && ammunition > 0)
+	{
+		reloadTime -= dt;
+
+		if (reloadTime < 0)
+		{
+			int reload = MAX_MAGAZINE - magazine;
+			if (reload > ammunition)
+			{
+				magazine += ammunition;
+				ammunition = 0;
+			}
+			else
+			{
+				ammunition -= reload;
+				magazine += reload;
+			}
+			reloadTime = RELOAD_INTERBAL;
+			SetIsReload(false);
 		}
 	}
 
@@ -221,7 +267,6 @@ void Player::Update(float dt, std::vector <Wall*> walls)
 		{
 			it = useBullets.erase(it);
 			unuseBullets.push_back(bullet);
-
 		}
 		else
 		{
@@ -261,4 +306,16 @@ void Player::UpgradeSpeed()
 void Player::UpgradeMaxHealth()
 {
 	maxHealth += START_HEALTH * 0.2f;
+}
+
+
+void Player::SetIsReload(bool isReload)
+{
+	std::cout << "isReload" << std::endl;
+	this->isReload = isReload;
+}
+
+bool Player::GetIsReload()
+{
+	return isReload;
 }

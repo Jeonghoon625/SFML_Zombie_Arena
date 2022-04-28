@@ -50,6 +50,9 @@
     <ClCompile Include="PickUp\PickUp.cpp">
       <Filter>PickUp</Filter>
     </ClCompile>
+    <ClCompile Include="Utils\UIMgr.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Utils\InputMgr.h">
@@ -75,6 +78,9 @@
     </ClInclude>
     <ClInclude Include="PickUp\PickUp.h">
       <Filter>PickUp</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\UIMgr.h">
+      <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
