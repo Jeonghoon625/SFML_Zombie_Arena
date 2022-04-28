@@ -96,15 +96,20 @@ void Zombie::Spawn(ZombieTypes type, IntRect arena, int x, int y, std::vector<Wa
 
 void Zombie::Update(float dt, Vector2f playerPosition)
 {
-	//살아있는지 죽었는지
-	
-
 	// 이동
 	float h = playerPosition.x - position.x;
 	float v = playerPosition.y - position.y;
 	Vector2f dir(h, v);
 
-	position += Utils::Normalize(dir) * speed * dt;
+	if (Utils::GetLength(dir) < speed * dt * 0.5f)
+	{
+		position = playerPosition;
+	}
+	else
+	{
+		position += Utils::Normalize(dir) * speed * dt;
+	}
+	
 	sprite.setPosition(position);
 
 	// 회전

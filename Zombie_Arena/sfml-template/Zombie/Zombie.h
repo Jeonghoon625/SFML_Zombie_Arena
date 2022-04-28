@@ -47,8 +47,5 @@ public:
 	bool UpdateCollision(Time time, Player& player);
 	FloatRect GetGlobalBound();
 	Sprite GetSprite();
-
-	static int ammunition;   // °¡Áö°í ÀÖ´Â ÃÑ ÅºÈ¯ ¼ö
-	static int magazine;   // ÅºÃ¢ ¾ÈÀÇ ÅºÈ¯ ¼ö
 };
 

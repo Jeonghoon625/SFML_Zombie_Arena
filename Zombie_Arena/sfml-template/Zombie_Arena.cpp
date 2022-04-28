@@ -268,7 +268,7 @@ int main()
 
 		window.clear();
 		
-		/*
+		
 		window.setView(mainView);
 		window.draw(tileMap, &texBackground);
 		
@@ -301,14 +301,15 @@ int main()
 		///////////////////// 
 		window.draw(healthBar);
 		ui.UiPlayUpdate(player);
-		ui.UiPlayDraw(window);
-		*/
-		ui.UiPlayUpdate(player);
 		ui.UiMenuUpdate(player);
-
 		ui.UiPlayDraw(window);
-		ui.UiMenuDraw(window);
 		
+		ui.UiPlayUpdate(player);
+
+
+		/*
+		ui.UiMenuDraw(window);
+		*/
 		window.display();
 		
 	}

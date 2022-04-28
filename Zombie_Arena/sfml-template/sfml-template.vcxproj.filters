@@ -1,86 +1,106 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="리소스 파일">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    <Filter Include="Framework">
+      <UniqueIdentifier>{e8306c07-fa28-4da2-b518-1e0d3a78fe3d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Player">
-      <UniqueIdentifier>{2859c0b4-6a20-411a-ba73-b3aecf1eb94f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Utils">
-      <UniqueIdentifier>{b9c5aa67-d8dc-49e7-b980-267001b78d44}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Zombie">
+    <Filter Include="Framework\Zombie">
       <UniqueIdentifier>{b3b9635f-448b-40d9-a512-fd579caaf226}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Bullet">
-      <UniqueIdentifier>{f91f0420-66dd-4d79-b8d7-7cf5af93895b}</UniqueIdentifier>
+    <Filter Include="Framework\PickUp">
+      <UniqueIdentifier>{a4fdd512-abfc-4f73-aa7d-ba05d5aecf58}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Wall">
+    <Filter Include="Framework\Player">
+      <UniqueIdentifier>{2859c0b4-6a20-411a-ba73-b3aecf1eb94f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\Utils">
+      <UniqueIdentifier>{b9c5aa67-d8dc-49e7-b980-267001b78d44}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\Wall">
       <UniqueIdentifier>{21c67c6a-c424-424b-8123-6f20c0f325f7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="PickUp">
-      <UniqueIdentifier>{a4fdd512-abfc-4f73-aa7d-ba05d5aecf58}</UniqueIdentifier>
+    <Filter Include="Framework\Bullet">
+      <UniqueIdentifier>{f91f0420-66dd-4d79-b8d7-7cf5af93895b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\Scene">
+      <UniqueIdentifier>{5f8a7a2a-6d0a-49f1-bdbe-fe4106f7914e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Zombie_Arena.cpp" />
     <ClCompile Include="Utils\InputMgr.cpp">
-      <Filter>Utils</Filter>
+      <Filter>Framework\Utils</Filter>
     </ClCompile>
     <ClCompile Include="Utils\Utils.cpp">
-      <Filter>Utils</Filter>
+      <Filter>Framework\Utils</Filter>
     </ClCompile>
     <ClCompile Include="Player\Player.cpp">
-      <Filter>Player</Filter>
+      <Filter>Framework\Player</Filter>
     </ClCompile>
     <ClCompile Include="Utils\TextureHolder.cpp">
-      <Filter>Utils</Filter>
+      <Filter>Framework\Utils</Filter>
     </ClCompile>
     <ClCompile Include="Zombie\Zombie.cpp">
-      <Filter>Zombie</Filter>
+      <Filter>Framework\Zombie</Filter>
     </ClCompile>
     <ClCompile Include="Bullet\Bullet.cpp">
-      <Filter>Bullet</Filter>
+      <Filter>Framework\Bullet</Filter>
     </ClCompile>
     <ClCompile Include="Wall\Wall.cpp">
-      <Filter>Wall</Filter>
+      <Filter>Framework\Wall</Filter>
     </ClCompile>
     <ClCompile Include="PickUp\PickUp.cpp">
-      <Filter>PickUp</Filter>
+      <Filter>Framework\PickUp</Filter>
     </ClCompile>
     <ClCompile Include="Utils\UIMgr.cpp">
-      <Filter>Utils</Filter>
+      <Filter>Framework\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\Framework.cpp">
+      <Filter>Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\TitleScene.cpp">
+      <Filter>Framework\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\Scene.cpp">
+      <Filter>Framework\Scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Utils\InputMgr.h">
-      <Filter>Utils</Filter>
+      <Filter>Framework\Utils</Filter>
     </ClInclude>
     <ClInclude Include="Utils\Utils.h">
-      <Filter>Utils</Filter>
+      <Filter>Framework\Utils</Filter>
     </ClInclude>
     <ClInclude Include="Player\Player.h">
-      <Filter>Player</Filter>
+      <Filter>Framework\Player</Filter>
     </ClInclude>
     <ClInclude Include="Utils\TextureHolder.h">
-      <Filter>Utils</Filter>
+      <Filter>Framework\Utils</Filter>
     </ClInclude>
     <ClInclude Include="Zombie\Zombie.h">
-      <Filter>Zombie</Filter>
+      <Filter>Framework\Zombie</Filter>
     </ClInclude>
     <ClInclude Include="Bullet\Bullet.h">
-      <Filter>Bullet</Filter>
+      <Filter>Framework\Bullet</Filter>
     </ClInclude>
     <ClInclude Include="Wall\Wall.h">
-      <Filter>Wall</Filter>
+      <Filter>Framework\Wall</Filter>
     </ClInclude>
     <ClInclude Include="PickUp\PickUp.h">
-      <Filter>PickUp</Filter>
+      <Filter>Framework\PickUp</Filter>
     </ClInclude>
     <ClInclude Include="Utils\UIMgr.h">
-      <Filter>Utils</Filter>
+      <Filter>Framework\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\Framework.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\Scene.h">
+      <Filter>Framework\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\TitleScene.h">
+      <Filter>Framework\Scene</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
