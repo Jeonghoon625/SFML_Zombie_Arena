@@ -10,7 +10,7 @@
 Player::Player()
 	: speed(START_SPEED), health(START_HEALTH), maxHealth(START_HEALTH),
 	arena(), resolution(), tileSize(0.f), immuneMs(START_IMMUNE_MS), distanceToMuzzle(45.f),
-	texFileName("graphics/player.png"), shootTimer(SHOOT_DELAY), reloadTime(RELOAD_INTERBAL), isReload(false), ammunition(START_AMMOUNITION), magazine(MAX_MAGAZINE)
+	texFileName("graphics/player.png"), shootTimer(SHOOT_DELAY), reloadTime(RELOAD_INTERBAL), isReload(false), ammunition(START_AMMOUNITION), magazine(MAX_MAGAZINE), playerHead(40)
 {
 	sprite.setTexture(TextureHolder::GetTexture(texFileName));
 	Utils::SetOrigin(sprite, Pivots::CC);
@@ -19,6 +19,13 @@ Player::Player()
 	{
 		unuseBullets.push_back(new Bullet());
 	}
+
+	// 체력 데미지 테스트 //
+	for (int i = 0; i < LIMIT_DAMAGE_TEXT; i++)
+	{
+		undamageMassage.push_back(new Damage());
+	}
+	////////////////////////
 }
 
 Player::~Player()
@@ -34,6 +41,18 @@ Player::~Player()
 		delete bullet;
 	}
 	useBullets.clear();
+
+	for (auto damage : undamageMassage)
+	{
+		delete damage;
+	}
+	undamageMassage.clear();
+
+	for (auto damage : damageMassage)
+	{
+		delete damage;
+	}
+	damageMassage.clear();
 }
 
 void Player::Shoot(Vector2f dir)
@@ -74,6 +93,20 @@ bool Player::OnHitted(Time timeHit)
 		if (health > 0)
 		{
 			health -= 10;
+			// 체력 데미지 테스트 //
+			Vector2f spawnPos(position.x, position.y - playerHead);
+			if (undamageMassage.empty())
+			{
+				for (int i = 0; i < LIMIT_DAMAGE_TEXT; ++i)
+				{
+					undamageMassage.push_back(new Damage());
+				}
+			}
+			Damage* damage = undamageMassage.front();
+			undamageMassage.pop_front();
+			damageMassage.push_back(damage);
+			damage->HitPlayer(spawnPos);
+			////////////////////////
 		}
 		
 		if (isReload == true)
@@ -275,14 +308,36 @@ void Player::Update(float dt, std::vector <Wall*> walls)
 			++it;
 		}
 	}
+
+	auto dm = damageMassage.begin();
+	while (dm != damageMassage.end())
+	{
+		Damage* damage = *dm;
+		damage->Update(dt);
+
+		if (!damage->IsActive())
+		{
+			dm = damageMassage.erase(dm);
+		}
+		else
+		{
+			++dm;
+		}
+	}
 }
 
 void Player::Draw(RenderWindow& window)
 {
 	window.draw(sprite);
+
 	for (auto bullet : useBullets)
 	{
 		window.draw(bullet->GetShape());
+	}
+
+	for (auto damage : damageMassage)
+	{
+		window.draw(damage->GetText());
 	}
 
 }

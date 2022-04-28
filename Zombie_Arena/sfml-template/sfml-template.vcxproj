@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="Blood\Blood.cpp" />
     <ClCompile Include="Bullet\Bullet.cpp" />
+    <ClCompile Include="Damage\Damage.cpp" />
     <ClCompile Include="Framework\Framework.cpp" />
     <ClCompile Include="PickUp\PickUp.cpp" />
     <ClCompile Include="Player\Player.cpp" />
@@ -39,6 +40,7 @@
   <ItemGroup>
     <ClInclude Include="Blood\Blood.h" />
     <ClInclude Include="Bullet\Bullet.h" />
+    <ClInclude Include="Damage\Damage.h" />
     <ClInclude Include="Framework\Framework.h" />
     <ClInclude Include="PickUp\PickUp.h" />
     <ClInclude Include="Player\Player.h" />

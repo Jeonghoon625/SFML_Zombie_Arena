@@ -2,16 +2,17 @@
 #include <SFML/Graphics.hpp>
 #include "../Wall/Wall.h"
 #include "../Bullet/Bullet.h"
+#include "../Damage/Damage.h"
 #include <list>
 
-using namespace sf;
-
+using namespace sf; 
+using namespace std;
 class PickUp;
 
 class Player
 {
 private:
-	const float START_SPEED = 200;
+	const float START_SPEED = 350;
 	const float START_HEALTH = 100;
 	const float START_IMMUNE_MS = 200;
 
@@ -21,6 +22,8 @@ private:
 
 	const float RELOAD_INTERBAL = 2.f;   // 재장전 시간
 	const float SHOOT_DELAY = 0.1f; // 탄환 생성 딜레이
+
+	const int LIMIT_DAMAGE_TEXT = 30;
 
 	Vector2f position;
 
@@ -52,6 +55,10 @@ private:
 	bool isReload;
 	int ammunition;   // 가지고 있는 총 탄환 수
 	int magazine;   // 탄창 안의 탄환 수
+
+	list<Damage*> undamageMassage;
+	list<Damage*> damageMassage;
+	float playerHead;
 
 public:
 	Player();

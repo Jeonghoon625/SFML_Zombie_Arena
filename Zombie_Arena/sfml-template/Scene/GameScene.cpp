@@ -31,18 +31,17 @@ void GameScene::Init()
 
 	CreateBackGround();
 
-	float healthBarwidth = player.GetHealth() * 3;
-	float healthBarheight = 50;
-	healthBarsize = Vector2f(healthBarwidth, healthBarheight);
-	healthBar.setSize(healthBarsize);
-	healthBar.setFillColor(Color::Red);
-
 	ammoPickup.SetArena(arena);
 	healthPickup.SetArena(arena);
 
 	items.push_back(&ammoPickup);
 	items.push_back(&healthPickup);
 
+	float healthBarwidth = player.GetHealth() * 3;
+	float healthBarheight = 50;
+	healthBarsize = Vector2f(healthBarwidth, healthBarheight);
+	healthBar.setSize(healthBarsize);
+	healthBar.setFillColor(Color::Red);
 	Vector2f healthPos = Vector2f(resolution.x * 0.4f - healthBarwidth * 0.4f, resolution.y - 140.f);
 	healthBar.setPosition(healthPos);
 	Texture& texBackground = TextureHolder::GetTexture("graphics/background_sheet.png");
