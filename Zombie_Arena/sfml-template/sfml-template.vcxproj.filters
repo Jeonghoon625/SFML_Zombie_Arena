@@ -25,6 +25,9 @@
     <Filter Include="Framework\Scene">
       <UniqueIdentifier>{5f8a7a2a-6d0a-49f1-bdbe-fe4106f7914e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Framework\Blood">
+      <UniqueIdentifier>{984ddce8-d9b9-4c5a-b549-a14956468d8b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Zombie_Arena.cpp" />
@@ -70,6 +73,9 @@
     <ClCompile Include="Scene\GameScene.cpp">
       <Filter>Framework\Scene</Filter>
     </ClCompile>
+    <ClCompile Include="Blood\Blood.cpp">
+      <Filter>Framework\Blood</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Utils\InputMgr.h">
@@ -113,6 +119,9 @@
     </ClInclude>
     <ClInclude Include="Scene\GameScene.h">
       <Filter>Framework\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Blood\Blood.h">
+      <Filter>Framework\Blood</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

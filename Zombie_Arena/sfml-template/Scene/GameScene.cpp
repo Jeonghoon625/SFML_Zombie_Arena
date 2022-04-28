@@ -25,7 +25,7 @@ void GameScene::Init()
 
 	player.Spawn(arena, resolution, 0.f);
 
-	CreateZombies(200);
+	CreateZombies(10);
 
 	texBackground = TextureHolder::GetTexture("graphics/background_sheet.png");
 
@@ -83,12 +83,48 @@ void GameScene::Update(Time dt, Time playTime, RenderWindow* window, View* mainV
 	player.Update(dt.asSeconds(), walls);
 	mainView->setCenter(player.GetPosition());
 
-	for (auto zombie : zombies)
+	auto itZombie = zombies.begin();
+	while (itZombie != zombies.end())
 	{
+		Zombie* zombie = *itZombie;
 		zombie->Update(dt.asSeconds(), player.GetPosition());
+
+		if (!zombie->IsALive())
+		{
+			Vector2f spawnPos = zombie->GetPosition();
+			Blood* blood = new Blood();
+
+			bloods.push_back(blood);
+			blood->Spawn(spawnPos);
+
+			delete zombie;
+			itZombie = zombies.erase(itZombie);
+		}
+		else
+		{
+			++itZombie;
+		}
+	}
+
+	auto itBlood = bloods.begin();
+	while (itBlood != bloods.end())
+	{
+		Blood* blood = *itBlood;
+		blood->Update(dt.asSeconds());
+
+		if (!blood->IsActive())
+		{
+			delete blood;
+			itBlood = bloods.erase(itBlood);
+		}
+		else
+		{
+			++itBlood;
+		}
 	}
 
 	player.UpdateCollision(zombies);
+
 	for (auto zombie : zombies)
 	{
 		if (zombie->UpdateCollision(playTime, player))
@@ -97,10 +133,10 @@ void GameScene::Update(Time dt, Time playTime, RenderWindow* window, View* mainV
 		}
 	}
 
+	player.UpdateCollision(items);
+
 	ammoPickup.Update(dt.asSeconds());
 	healthPickup.Update(dt.asSeconds());
-
-	player.UpdateCollision(items);
 
 	float healthBarwidth = player.GetHealth() * 3;
 	healthBarsize.x = healthBarwidth;
@@ -108,11 +144,11 @@ void GameScene::Update(Time dt, Time playTime, RenderWindow* window, View* mainV
 
 	// Shoot Counting
 	stringstream am;
-	am << "Ammunition = " << Player::ammunition;
+	am << "Ammunition = " << player.GetAmmunition();
 	textAmmunition.setString(am.str());
 
 	stringstream mg;
-	mg << "Magazine = " << Player::magazine;
+	mg << "Magazine = " << player.GetMagazine();
 	textMagazine.setString(mg.str());
 	//
 }
@@ -122,6 +158,7 @@ void GameScene::Draw(RenderWindow* window, View* mainView, View* uiView)
 	window->clear();
 	window->setView(*mainView);
 	window->draw(tileMap, &texBackground);
+
 	if (ammoPickup.IsSpawned())
 	{
 		window->draw(ammoPickup.GetSprite());
@@ -132,10 +169,16 @@ void GameScene::Draw(RenderWindow* window, View* mainView, View* uiView)
 		window->draw(healthPickup.GetSprite());
 	}
 
+	for (auto blood : bloods)
+	{
+		window->draw(blood->GetSprite());
+	}
+
 	for (auto zombie : zombies)
 	{
 		window->draw(zombie->GetSprite());
 	}
+
 	player.Draw(*window);
 	window->draw(spriteCrosshair);
 	window->setView(*uiView);
@@ -151,11 +194,11 @@ void GameScene::Draw(RenderWindow* window, View* mainView, View* uiView)
 	window->draw(healthBar);
 
 	/*
-		ui.UiPlayUpdate(player);
-		ui.UiMenuUpdate(player);
-		ui.UiPlayDraw(window);
-		ui.UiPlayUpdate(player);
-		ui.UiMenuDraw(window);
+	ui.UiPlayUpdate(player);
+	ui.UiMenuUpdate(player);
+	ui.UiPlayDraw(window);
+	ui.UiPlayUpdate(player);
+	ui.UiMenuDraw(window);
 	*/
 }
 

@@ -5,6 +5,7 @@
 #include "../Wall/Wall.h"
 #include "../Zombie/Zombie.h"
 #include "../PickUp/PickUp.h"
+#include "../Blood/Blood.h"
 
 using namespace sf;
 using namespace std;
@@ -19,6 +20,7 @@ private:
 	IntRect arena;
 
 	vector <Zombie*> zombies;
+	vector<Blood*> bloods;
 
 	Player player;
 	
@@ -26,7 +28,7 @@ private:
 	VertexArray tileMap;
 	Vector2i resolution;
 
-	std::vector<PickUp*> items;
+	vector<PickUp*> items;
 	PickUp ammoPickup;
 	PickUp healthPickup;
 
@@ -36,7 +38,6 @@ private:
 	Text textReload;
 	RectangleShape healthBar;
 	Vector2f healthBarsize;
-
 	
 public:
 	GameScene();

@@ -1,19 +1,16 @@
+#include <cmath>
+#include <iostream>
+#include <algorithm>
 #include "Player.h"
 #include "../Utils/Utils.h"
 #include "../Utils/InputMgr.h"
-#include <cmath>
-#include <iostream>
 #include "../Utils/TextureHolder.h"
-#include <algorithm>
 #include "../PickUp/PickUp.h"
-
-int Player::ammunition;
-int Player::magazine;
 
 Player::Player()
 	: speed(START_SPEED), health(START_HEALTH), maxHealth(START_HEALTH),
 	arena(), resolution(), tileSize(0.f), immuneMs(START_IMMUNE_MS), distanceToMuzzle(45.f),
-	texFileName("graphics/player.png"), shootTimer(SHOOT_DELAY), reloadTime(RELOAD_INTERBAL), isReload(false)
+	texFileName("graphics/player.png"), shootTimer(SHOOT_DELAY), reloadTime(RELOAD_INTERBAL), isReload(false), ammunition(START_AMMOUNITION), magazine(MAX_MAGAZINE)
 {
 	sprite.setTexture(TextureHolder::GetTexture(texFileName));
 	Utils::SetOrigin(sprite, Pivots::CC);
@@ -22,9 +19,6 @@ Player::Player()
 	{
 		unuseBullets.push_back(new Bullet());
 	}
-
-	ammunition = START_AMMOUNITION;
-	magazine = MAX_MAGAZINE;
 }
 
 Player::~Player()
@@ -136,16 +130,24 @@ bool Player::UpdateCollision(const std::vector<Zombie*>& zombies)
 	}
 	return isCollided;
 }
-
+   
 bool Player::UpdateCollision(const std::vector<PickUp*>& items)
 {
 	FloatRect bounds = sprite.getGlobalBounds();
 	bool isCollided = false;
 	for (auto item : items)
 	{
-
 		if (bounds.intersects(item->GetGlobalBounds()))
 		{
+			if (item->GetType() == PickUpTypes::Ammo)
+			{
+				GetAmmuItem(item->GetValue());
+			}
+			else if (item->GetType() == PickUpTypes::Health)
+			{
+				GetHealthItem(item->GetValue());
+			}
+
 			item->GotIt();
 			isCollided = true;
 		};
@@ -298,6 +300,19 @@ void Player::GetHealthItem(int amount)
 	}
 }
 
+void Player::GetAmmuItem(int amount)
+{
+	ammunition += amount;
+	if (ammunition > MAX_Ammunitation)
+	{
+		ammunition = MAX_Ammunitation;
+	}
+	if (ammunition < 0)
+	{
+		ammunition = 0;
+	}
+}
+
 void Player::UpgradeSpeed()
 {
 	speed += START_SPEED * 0.2f;
@@ -318,3 +333,14 @@ bool Player::GetIsReload()
 {
 	return isReload;
 }
+
+int Player::GetAmmunition() const
+{
+	return ammunition;
+}
+
+int Player::GetMagazine() const
+{
+	return magazine;
+}
+

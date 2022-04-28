@@ -91,6 +91,7 @@ void PickUp::Spawn(bool spawn)
 	else
 	{
 		timer = START_WAIT_TIME;
+		sprite.setPosition(Vector2f(-1, -1));
 	}
 }
 
@@ -101,6 +102,7 @@ int PickUp::GotIt()
 	case PickUpTypes::Ammo:
 		Spawn(false);
 		break;
+
 	case PickUpTypes::Health:
 		Spawn(false);
 		break;
@@ -131,6 +133,11 @@ bool PickUp::IsSpawned()
 Sprite PickUp::GetSprite()
 {
 	return sprite;
+}
+
+int PickUp::GetValue()
+{
+	return value;
 }
 
 void PickUp::Setwalls(std::vector<Wall*> vectorWalls)

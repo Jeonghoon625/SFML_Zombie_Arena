@@ -16,10 +16,11 @@ private:
 	const float START_IMMUNE_MS = 200;
 
 	const int START_AMMOUNITION = 120;   // 초기 총 탄환 수
-	const int MAX_MAGAZINE = 12;   // 최대 장전 탄환 수
+	const int MAX_MAGAZINE = 30;   // 최대 장전 탄환 수
+	const int MAX_Ammunitation = 120;   // 최대 보유 탄환 수
 
 	const float RELOAD_INTERBAL = 2.f;   // 재장전 시간
-	const float SHOOT_DELAY = 0.2f; // 탄환 생성 딜레이
+	const float SHOOT_DELAY = 0.1f; // 탄환 생성 딜레이
 
 	Vector2f position;
 
@@ -49,11 +50,10 @@ private:
 	float shootTimer;
 	float reloadTime;
 	bool isReload;
+	int ammunition;   // 가지고 있는 총 탄환 수
+	int magazine;   // 탄창 안의 탄환 수
 
 public:
-	static int ammunition;   // 가지고 있는 총 탄환 수
-	static int magazine;   // 탄창 안의 탄환 수
-
 	Player();
 	~Player();
 
@@ -75,10 +75,14 @@ public:
 	void Update(float dt, std::vector<Wall*> walls);
 	void Draw(RenderWindow& window);
 	void GetHealthItem(int amount);
+	void GetAmmuItem(int amount);
 	void UpgradeSpeed();
 	void UpgradeMaxHealth();
 
 	void SetIsReload(bool isReload);
 	bool GetIsReload();
+
+	int GetAmmunition() const;
+	int GetMagazine() const;
 };
 

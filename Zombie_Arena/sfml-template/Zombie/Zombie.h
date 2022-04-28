@@ -47,5 +47,6 @@ public:
 	bool UpdateCollision(Time time, Player& player);
 	FloatRect GetGlobalBound();
 	Sprite GetSprite();
+	Vector2f GetPosition();
 };
 

@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Blood\Blood.cpp" />
     <ClCompile Include="Bullet\Bullet.cpp" />
     <ClCompile Include="Framework\Framework.cpp" />
     <ClCompile Include="PickUp\PickUp.cpp" />
@@ -36,6 +37,7 @@
     <ClCompile Include="Zombie_Arena.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Blood\Blood.h" />
     <ClInclude Include="Bullet\Bullet.h" />
     <ClInclude Include="Framework\Framework.h" />
     <ClInclude Include="PickUp\PickUp.h" />

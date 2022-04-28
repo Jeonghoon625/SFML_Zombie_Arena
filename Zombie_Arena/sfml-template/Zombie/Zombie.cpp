@@ -38,8 +38,16 @@ Zombie::Zombie()
 
 bool Zombie::OnHitted()
 {
-	health -= 10;
-	return true;
+	if (health > 0)
+	{
+		health -= 2;
+		return true;
+	}
+	else
+	{
+		alive = false;
+		return true;
+	}
 }
 
 bool Zombie::IsALive()
@@ -124,6 +132,8 @@ bool Zombie::UpdateCollision(Time time, Player& player)
 	{
 		return player.OnHitted(time);
 	}
+	
+	return false;
 }
 
 FloatRect Zombie::GetGlobalBound()
@@ -134,4 +144,9 @@ FloatRect Zombie::GetGlobalBound()
 Sprite Zombie::GetSprite()
 {
 	return sprite;
+}
+
+Vector2f Zombie::GetPosition()
+{
+	return position;
 }
