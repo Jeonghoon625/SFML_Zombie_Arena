@@ -311,7 +311,6 @@ void Player::UpgradeMaxHealth()
 
 void Player::SetIsReload(bool isReload)
 {
-	std::cout << "isReload" << std::endl;
 	this->isReload = isReload;
 }
 

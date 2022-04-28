@@ -1,19 +1,33 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include "../Utils/SceneManager.h"
-#include <string>
+#include "../Utils/InputMgr.h"
+#include "../Utils/UIMgr.h"
+#include "../Utils/TextureHolder.h"
+
+using namespace sf;
 
 class Framework
 {
 private:
-	sf::RenderWindow* window;
-	sf::Clock clock;
+	RenderWindow* window;
+	View* mainView;
+	View* uiView;
+	Vector2i resolution;
 
 	SceneManager sceneManager;
+	TextureHolder textureHolder;
+	UIMgr uiMgr;
+
+	Clock clock;
+	Time playTime;
+	Time dt;
 
 public:
-	void Init(int screenWidth, int screenHeight, std::string gameTitle);
-	void Update(float deltaTime);
-	void Draw(sf::RenderWindow* window);
+	bool Initialize();
+	void Update();
+	void Draw();
 	int Run();
+
+	~Framework();
 };

@@ -55,13 +55,19 @@
     <ClCompile Include="Utils\UIMgr.cpp">
       <Filter>Framework\Utils</Filter>
     </ClCompile>
-    <ClCompile Include="Framework\Framework.cpp">
-      <Filter>Framework</Filter>
-    </ClCompile>
     <ClCompile Include="Scene\TitleScene.cpp">
       <Filter>Framework\Scene</Filter>
     </ClCompile>
     <ClCompile Include="Scene\Scene.cpp">
+      <Filter>Framework\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\Framework.cpp">
+      <Filter>Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils\SceneManager.cpp">
+      <Filter>Framework\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\GameScene.cpp">
       <Filter>Framework\Scene</Filter>
     </ClCompile>
   </ItemGroup>
@@ -93,13 +99,19 @@
     <ClInclude Include="Utils\UIMgr.h">
       <Filter>Framework\Utils</Filter>
     </ClInclude>
-    <ClInclude Include="Framework\Framework.h">
-      <Filter>Framework</Filter>
-    </ClInclude>
     <ClInclude Include="Scene\Scene.h">
       <Filter>Framework\Scene</Filter>
     </ClInclude>
     <ClInclude Include="Scene\TitleScene.h">
+      <Filter>Framework\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\Framework.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\SceneManager.h">
+      <Filter>Framework\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\GameScene.h">
       <Filter>Framework\Scene</Filter>
     </ClInclude>
   </ItemGroup>

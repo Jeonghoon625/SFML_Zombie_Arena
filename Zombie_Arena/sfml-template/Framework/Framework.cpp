@@ -1,27 +1,40 @@
 #include "Framework.h"
 
-void Framework::Init(int screenWidth, int screenHeight, std::string gameTitle)
+bool Framework::Initialize()
 {
-	sf::VideoMode vm(screenWidth, screenHeight); //inital size hd
-	window = new sf::RenderWindow(vm, gameTitle, sf::Style::Default);
+	resolution.x = VideoMode::getDesktopMode().width;
+	resolution.y = VideoMode::getDesktopMode().height;
+	window = new RenderWindow(VideoMode(resolution.x, resolution.y), "Zombie Arena!", Style::Default);
+	mainView = new View(FloatRect(0, 0, resolution.x, resolution.y));
+	uiView = new View(FloatRect(0, 0, resolution.x, resolution.y));
 	
-	//ResourceManager::GetInstance().Init();
+	InputMgr::Init();
+
+	uiMgr.UiPlayInit(*uiView);
+	uiMgr.UiMenuInit(*uiView);
+
 	sceneManager.Init();
+	//ResourceManager::GetInstance().Init();
+
+	return true;
+	
 }
 
-void Framework::Update(float deltaTime)
+void Framework::Update()
 {
-	sf::Event event;
+	InputMgr::ClearInput();
+
+	Event event;
 	while (window->pollEvent(event))
 	{
 		switch (event.type)
 		{
-		case sf::Event::Closed:
+		case Event::Closed:
 			window->close();
 			break;
 		
-		case sf::Event::KeyPressed:
-			if (event.key.code == sf::Keyboard::Escape)
+		case Event::KeyPressed:
+			if (event.key.code == Keyboard::Escape)
 			{
 				window->close();
 				break;
@@ -30,17 +43,18 @@ void Framework::Update(float deltaTime)
 		default:
 			break;
 		}
+
+		InputMgr::ProcessInput(event);
 	}
 
-	sceneManager.Update(deltaTime);
+	InputMgr::Update(dt.asSeconds(), *window, *mainView);
+	sceneManager.Update(dt, playTime, window, mainView);
 }
 
-void Framework::Draw(sf::RenderWindow* window)
+void Framework::Draw()
 {
 	window->clear();
-
-	sceneManager.Draw(window);
-
+	sceneManager.Draw(window, mainView, uiView);
 	window->display();
 }
 
@@ -48,11 +62,19 @@ int Framework::Run() //Game Loop
 {
 	while (window->isOpen())
 	{
-		sf::Time dt = clock.restart();
-		Update(dt.asSeconds());
-		Draw(window);
+		dt = clock.restart();
+		playTime += dt;
+
+		Update();
+		Draw();
 	}
 
 	return 0;
 }
 
+Framework::~Framework()
+{
+	delete window;
+	delete mainView;
+	delete uiView;
+}

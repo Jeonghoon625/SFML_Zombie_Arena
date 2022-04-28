@@ -87,8 +87,6 @@ void PickUp::Spawn(bool spawn)
 				sprite.setPosition(position);
 			}
 		}
-
-		//sprite.setPosition(Vector2f(x, y));
 	}
 	else
 	{

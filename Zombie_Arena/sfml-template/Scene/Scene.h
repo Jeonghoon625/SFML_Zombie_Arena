@@ -1,10 +1,13 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 
+using namespace sf;
+
 class Scene
 {
 public:
-	virtual void Init() = 0;
-	virtual void Update(float deltaTime) = 0;
-	virtual void Draw(sf::RenderWindow* window) = 0;
+	virtual void Init();
+	virtual void Update(Time dt, Time playTime, RenderWindow* window, View* mainView);
+	virtual void Draw(RenderWindow* window , View* mainView , View* uiView);
+	virtual ~Scene();
 };

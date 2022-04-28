@@ -14,4 +14,5 @@ public:
 	virtual void Init();
 	virtual void Update(float deltaTime);
 	virtual void Draw(sf::RenderWindow* window);
+	virtual ~TitleScene();
 };
