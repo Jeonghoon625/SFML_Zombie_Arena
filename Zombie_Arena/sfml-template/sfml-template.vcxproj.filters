@@ -82,6 +82,9 @@
     <ClCompile Include="Damage\Damage.cpp">
       <Filter>Framework\Damage</Filter>
     </ClCompile>
+    <ClCompile Include="Scene\MenuScene.cpp">
+      <Filter>Framework\Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Utils\InputMgr.h">
@@ -131,6 +134,9 @@
     </ClInclude>
     <ClInclude Include="Damage\Damage.h">
       <Filter>Framework\Damage</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\MenuScene.h">
+      <Filter>Framework\Scene</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

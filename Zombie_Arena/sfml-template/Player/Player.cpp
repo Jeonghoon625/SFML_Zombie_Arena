@@ -6,6 +6,7 @@
 #include "../Utils/InputMgr.h"
 #include "../Utils/TextureHolder.h"
 #include "../PickUp/PickUp.h"
+#include "../Wall/Wall.h"
 
 Player::Player()
 	: speed(START_SPEED), health(START_HEALTH), maxHealth(START_HEALTH),
@@ -92,7 +93,8 @@ bool Player::OnHitted(Time timeHit)
 		lastHit = timeHit;
 		if (health > 0)
 		{
-			health -= 10;
+			std::cout << health << std::endl;
+			health -= 5;
 			// 체력 데미지 테스트 //
 			Vector2f spawnPos(position.x, position.y - playerHead);
 			if (undamageMassage.empty())
@@ -157,6 +159,20 @@ bool Player::UpdateCollision(const std::vector<Zombie*>& zombies)
 	{
 
 		if (bullet->UpdateCollision(zombies))
+		{
+			isCollided = true;
+		};
+	}
+	return isCollided;
+}
+
+bool Player::UpdateCollision(const std::vector<Wall*>& walls)
+{
+	bool isCollided = false;
+	for (auto bullet : useBullets)
+	{
+
+		if (bullet->UpdateCollision(walls))
 		{
 			isCollided = true;
 		};

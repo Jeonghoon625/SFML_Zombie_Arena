@@ -1,7 +1,9 @@
 #include "Scene.h"
+#include "../Utils/SceneManager.h"
 
-void Scene::Init()
+void Scene::Init(SceneManager* sceneManager)
 {
+	this->sceneManager = sceneManager;
 }
 
 void Scene::Update(Time dt, Time playTime, RenderWindow* window, View* mainView)

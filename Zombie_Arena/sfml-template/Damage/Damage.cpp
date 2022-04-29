@@ -6,7 +6,7 @@ Damage::Damage()
 {
 	fontZombiecontrol.loadFromFile("fonts/zombiecontrol.ttf");
 	textDamage.setFont(fontZombiecontrol);
-	textDamage.setString("-10");
+	textDamage.setString("-5");
 	textDamage.setFillColor(Color::Red);
 	textDamage.setCharacterSize(20);
 

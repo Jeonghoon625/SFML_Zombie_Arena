@@ -6,6 +6,7 @@
 #include "../Zombie/Zombie.h"
 #include "../PickUp/PickUp.h"
 #include "../Blood/Blood.h"
+#include "../Utils/SceneManager.h"
 
 using namespace sf;
 using namespace std;
@@ -13,6 +14,7 @@ using namespace std;
 class GameScene : public Scene
 {
 private:
+	SceneManager* sceneManager;
 	Sprite spriteCrosshair;
 	Texture textureCrosshair;
 	Texture texBackground;
@@ -41,7 +43,7 @@ private:
 	
 public:
 	GameScene();
-	virtual void Init();
+	virtual void Init(SceneManager* sceneManager);
 	virtual void Update(Time dt, Time playTime, RenderWindow* window, View* mainView);
 	virtual void Draw(RenderWindow* window, View* mainView, View* uiView);
 	virtual ~GameScene();

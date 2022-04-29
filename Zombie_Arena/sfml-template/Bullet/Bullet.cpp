@@ -3,6 +3,7 @@
 #include "../Utils/Utils.h"
 #include "../Utils/InputMgr.h"
 #include "../Zombie/Zombie.h"
+#include "../Wall/Wall.h"
 
 Bullet::Bullet() : speed(DEFAULT_SPEED), isActive(false), textureFileName("graphics/bullet.png")
 {
@@ -48,6 +49,22 @@ bool Bullet::UpdateCollision(const std::vector<Zombie*>& zombies)
 
 				return true;
 			}
+		}
+	}
+
+	return false;
+}
+
+bool Bullet::UpdateCollision(const std::vector<Wall*>& walls)
+{
+	FloatRect bounds = shape.getGlobalBounds();
+
+	for (auto wall : walls)
+	{
+		if (bounds.intersects(wall->GetWallRect()))
+		{
+			Stop();
+			return true;
 		}
 	}
 

@@ -4,8 +4,7 @@
 
 void SceneManager::Init()
 {
-	//sceneSwitch(SceneType::TITLE);
-	sceneSwitch(SceneType::GAME);
+	sceneSwitch(SceneType::TITLE);
 }
 
 void SceneManager::Update(Time dt, Time playTime, RenderWindow* window, View* mainView)
@@ -21,7 +20,6 @@ void SceneManager::Draw(sf::RenderWindow* window, View* mainView, View* uiView)
 void SceneManager::sceneSwitch(SceneType sceneType)
 {
 	sceneRelease();
-
 	switch (sceneType)
 	{
 	case SceneType::TITLE:
@@ -37,7 +35,6 @@ void SceneManager::sceneSwitch(SceneType sceneType)
 		break;
 
 	}
-
 	sceneInit();
 }
 
@@ -52,5 +49,5 @@ void SceneManager::sceneRelease()
 
 void SceneManager::sceneInit()
 {
-	currentScene->Init();
+	currentScene->Init(this);
 }

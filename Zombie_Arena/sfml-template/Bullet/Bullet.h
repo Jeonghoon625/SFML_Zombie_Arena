@@ -4,6 +4,7 @@
 using namespace sf;
 
 class Zombie;
+class Wall;
 
 class Bullet
 {
@@ -32,6 +33,7 @@ public :
 	void Stop();
 	bool IsActive();
 	bool UpdateCollision(const std::vector<Zombie*>& zombies);
+	bool UpdateCollision(const std::vector<Wall*>& walls);
 	Sprite GetSprite();
 	RectangleShape GetShape();
 

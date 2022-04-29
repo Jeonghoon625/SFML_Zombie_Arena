@@ -1,5 +1,4 @@
 #include "GameScene.h"
-#include "TitleScene.h"
 #include "../Utils/Utils.h"
 #include "../Utils/InputMgr.h"
 #include "../Utils/TextureHolder.h"
@@ -9,8 +8,9 @@ GameScene::GameScene() : ammoPickup(PickUp(PickUpTypes::Ammo)), healthPickup(Pic
 {
 }
 
-void GameScene::Init()
+void GameScene::Init(SceneManager* sceneManager)
 {
+	this->sceneManager = sceneManager;
 	resolution.x = VideoMode::getDesktopMode().width;
 	resolution.y = VideoMode::getDesktopMode().height;
 
@@ -123,7 +123,6 @@ void GameScene::Update(Time dt, Time playTime, RenderWindow* window, View* mainV
 	}
 
 	player.UpdateCollision(zombies);
-
 	for (auto zombie : zombies)
 	{
 		if (zombie->UpdateCollision(playTime, player))
@@ -131,8 +130,8 @@ void GameScene::Update(Time dt, Time playTime, RenderWindow* window, View* mainV
 			break;
 		}
 	}
-
 	player.UpdateCollision(items);
+	player.UpdateCollision(walls);
 
 	ammoPickup.Update(dt.asSeconds());
 	healthPickup.Update(dt.asSeconds());
@@ -191,14 +190,6 @@ void GameScene::Draw(RenderWindow* window, View* mainView, View* uiView)
 	}
 	///////////////////// 
 	window->draw(healthBar);
-
-	/*
-	ui.UiPlayUpdate(player);
-	ui.UiMenuUpdate(player);
-	ui.UiPlayDraw(window);
-	ui.UiPlayUpdate(player);
-	ui.UiMenuDraw(window);
-	*/
 }
 
 GameScene::~GameScene()

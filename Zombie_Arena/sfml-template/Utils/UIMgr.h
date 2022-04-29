@@ -17,9 +17,22 @@ enum class levelMenu : int
 class UIMgr
 {
 private:
-	//game play
+	// font
+	Font fontZombieControl;
+	// texture string
 	std::string textureFileName;
 
+	//title
+	Sprite spriteTitle;
+	Text textTitle;
+	Text textMenu[3];
+	int titleXpos;
+	Vector2i menuPos;
+	Texture textureCS;
+	Sprite spriteCS;
+	int menuNum;
+
+	//game play
 	Text textScore;
 	Text textHighScore;
 	Text textBullet;
@@ -28,8 +41,6 @@ private:
 
 	RectangleShape healthBar;
 	Vector2f healthBarsize;
-
-	Font fontZombieControl;
 
 	int score;
 	int highScore;
@@ -48,10 +59,14 @@ private:
 
 	int characterSize;
 	int selectButtonNum;
-	
+
 
 public:
 	UIMgr();
+	//title
+	void UiTitleInit();
+	void UiTitleUpdate(RenderWindow& window);
+	void UiTitleDraw(RenderWindow& window);
 	//game play
 	void UiPlayInit(View& worldView);
 	void UiPlayUpdate(Player& player);

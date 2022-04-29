@@ -45,8 +45,8 @@ private:
 	Time lastHit;
 
 	const int BULLET_CACHE_SIZE = 1000;
-	std::list<Bullet*> unuseBullets;
-	std::list<Bullet*> useBullets;
+	list<Bullet*> unuseBullets;
+	list<Bullet*> useBullets;
 
 	float distanceToMuzzle;
 	
@@ -76,7 +76,10 @@ public:
 	float GetRotation() const;
 	Sprite GetSprite() const;
 	int GetHealth() const;
+	int GetAmmunition() const;
+	int GetMagazine() const;
 
+	bool UpdateCollision(const std::vector<Wall*>& walls);
 	bool UpdateCollision(const std::vector<Zombie*>& zombies);
 	bool UpdateCollision(const std::vector<PickUp*>& items);
 	void Update(float dt, std::vector<Wall*> walls);
@@ -89,7 +92,6 @@ public:
 	void SetIsReload(bool isReload);
 	bool GetIsReload();
 
-	int GetAmmunition() const;
-	int GetMagazine() const;
+	
 };
 
