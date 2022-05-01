@@ -59,7 +59,7 @@ private:
 
 	int characterSize;
 	int selectButtonNum;
-
+	
 
 public:
 	UIMgr();
@@ -67,9 +67,10 @@ public:
 	void UiTitleInit();
 	void UiTitleUpdate(RenderWindow& window);
 	void UiTitleDraw(RenderWindow& window);
+	int GetMenuNum();
 	//game play
-	void UiPlayInit(View& worldView);
-	void UiPlayUpdate(Player& player);
+	void UiPlayInit();
+	void UiPlayUpdate(View& worldView, Player& player, int zombieNum, int waveNum, int score);
 	void UiPlayDraw(RenderWindow& window);
 	//game level menu
 	void UiMenuInit(View& uiView);

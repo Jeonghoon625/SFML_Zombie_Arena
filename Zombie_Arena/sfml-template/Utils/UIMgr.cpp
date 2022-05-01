@@ -4,6 +4,7 @@
 #include "../Utils/TextureHolder.h"
 #include "../Utils/Utils.h"
 #include "../Utils/InputMgr.h"
+#include <iostream>
 
 using namespace sf;
 using namespace std;
@@ -56,18 +57,15 @@ void UIMgr::UiTitleUpdate(RenderWindow& window)
 {
 	if (InputMgr::GetKeyDown(Keyboard::Key::Up) && menuNum != 1)
 	{
+		std::cout << "Click" << std::endl;
 		--menuNum;
 		spriteCS.setPosition(menuPos.x - 80, spriteCS.getPosition().y - 50);
 	}
 
-	if (InputMgr::GetKeyDown(Keyboard::Key::Down) && selectButtonNum != 3)
+	if (InputMgr::GetKeyDown(Keyboard::Key::Down) && menuNum != 3)
 	{
 		++menuNum;
 		spriteCS.setPosition(menuPos.x - 80, spriteCS.getPosition().y + 50);
-	}
-
-	if (InputMgr::GetKeyDown(Keyboard::Key::Enter))
-	{
 	}
 }
 
@@ -79,9 +77,15 @@ void UIMgr::UiTitleDraw(RenderWindow& window)
 	{
 		window.draw(textMenu[i]);
 	}
+	window.draw(spriteCS);
 }
 
-void UIMgr::UiPlayInit(View& worldView)
+int UIMgr::GetMenuNum()
+{
+	return menuNum;
+}
+
+void UIMgr::UiPlayInit()
 {
 	// 폰트설정
 	textScore.setFont(fontZombieControl);
@@ -108,41 +112,24 @@ void UIMgr::UiPlayInit(View& worldView)
 	textWave.setFillColor(Color::White);
 	textZombies.setFillColor(Color::White);
 
-	stringstream ss;	//string score
-	ss << "SCORE:" << score;
-	textScore.setString(ss.str());
-	stringstream sh;	//string high score
-	sh << "HI SCORE:" << highScore;
-	textHighScore.setString(sh.str());
-	stringstream sb;
-	sb << remainingBullet << "/" << allBullet;
-	textBullet.setString(sb.str());
-	stringstream sw;
-	sw << "WAVE:" << wave;
-	textWave.setString(sw.str());
-	stringstream sz;
-	sz << "ZOMBIES:" << zombies;
-	textZombies.setString(sz.str());
+	Utils::SetOrigin(healthBar, Pivots::CC);
+	healthBar.setFillColor(Color::Red);
+}
 
-	// position
+void UIMgr::UiPlayUpdate(View& worldView, Player& player, int zombieNum, int waveNum, int score)
+{
 	textScore.setPosition(worldView.getSize().x * 0.05f, worldView.getSize().y * 0.05f);
 	textHighScore.setPosition(worldView.getSize().x * 0.8f, worldView.getSize().y * 0.05f);
 	textBullet.setPosition(worldView.getSize().x * 0.1f, worldView.getSize().y * 0.9f);
 	textWave.setPosition(worldView.getSize().x * 0.65f, worldView.getSize().y * 0.9f);
 	textZombies.setPosition(worldView.getSize().x * 0.85f, worldView.getSize().y * 0.9f);
-
-	Utils::SetOrigin(healthBar, Pivots::CC);
 	float healthBarwidth = 300;
 	float healthBarheight = 50;
 	healthBarsize = Vector2f(healthBarwidth, healthBarheight);
 	healthBar.setSize(healthBarsize);
-	Vector2f healthPos = Vector2f(worldView.getSize().x * 0.4f - healthBarwidth * 0.4f, worldView.getSize().y - 140.f);
+	Vector2f healthPos = Vector2f(worldView.getSize().x * 0.4f - healthBarwidth * 0.4f, worldView.getSize().y * 0.9f);
 	healthBar.setPosition(healthPos);
-	healthBar.setFillColor(Color::Red);
-}
 
-void UIMgr::UiPlayUpdate(Player& player)
-{
 	stringstream ss;	//string score
 	ss << "SCORE:" << score;
 	textScore.setString(ss.str());
@@ -150,13 +137,13 @@ void UIMgr::UiPlayUpdate(Player& player)
 	sh << "HI SCORE:" << highScore;
 	textHighScore.setString(sh.str());
 	stringstream sb;
-	sb << remainingBullet << "/" << allBullet;
+	sb << player.GetAmmunition() << "/" << player.GetMagazine();
 	textBullet.setString(sb.str());
 	stringstream sw;
-	sw << "WAVE:" << wave;
+	sw << "WAVE:" << waveNum;
 	textWave.setString(sw.str());
 	stringstream sz;
-	sz << "ZOMBIES:" << zombies;
+	sz << "ZOMBIES:" << zombieNum;
 	textZombies.setString(sz.str());
 
 	healthBarsize.x = player.GetHealth() * 3;	//체력 바
@@ -222,7 +209,6 @@ void UIMgr::UiMenuUpdate(Player& player)
 	if (InputMgr::GetKeyDown(Keyboard::Key::Enter))
 	{
 	}
-
 }
 
 void UIMgr::UiMenuDraw(RenderWindow& window)

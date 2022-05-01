@@ -4,20 +4,16 @@ bool Framework::Initialize()
 {
 	resolution.x = VideoMode::getDesktopMode().width;
 	resolution.y = VideoMode::getDesktopMode().height;
-	window = new RenderWindow(VideoMode(resolution.x, resolution.y), "Zombie Arena!", Style::Default);
+	window = new RenderWindow(VideoMode(resolution.x, resolution.y), "Zombie Arena!", Style::Fullscreen);
 	mainView = new View(FloatRect(0, 0, resolution.x, resolution.y));
 	uiView = new View(FloatRect(0, 0, resolution.x, resolution.y));
 	
 	InputMgr::Init();
 
-	uiMgr.UiPlayInit(*uiView);
-	uiMgr.UiMenuInit(*uiView);
-
 	sceneManager.Init();
 	//ResourceManager::GetInstance().Init();
 
 	return true;
-	
 }
 
 void Framework::Update()
@@ -62,9 +58,8 @@ int Framework::Run() //Game Loop
 {
 	while (window->isOpen())
 	{
-		dt = clock.restart();
+		dt = clock.restart(); //Frame
 		playTime += dt;
-
 		Update();
 		Draw();
 	}

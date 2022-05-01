@@ -7,6 +7,7 @@
 #include "../PickUp/PickUp.h"
 #include "../Blood/Blood.h"
 #include "../Utils/SceneManager.h"
+#include "../Utils/UIMgr.h"
 
 using namespace sf;
 using namespace std;
@@ -15,6 +16,7 @@ class GameScene : public Scene
 {
 private:
 	SceneManager* sceneManager;
+	UIMgr ui;
 	Sprite spriteCrosshair;
 	Texture textureCrosshair;
 	Texture texBackground;
@@ -23,6 +25,7 @@ private:
 
 	vector <Zombie*> zombies;
 	vector<Blood*> bloods;
+	int zombieNum;
 
 	Player player;
 	
@@ -38,9 +41,20 @@ private:
 	Text textAmmunition;
 	Text textMagazine;
 	Text textReload;
+	Text textWave;
+	Text textClear;
+	Text textOver;
 	RectangleShape healthBar;
 	Vector2f healthBarsize;
+	bool isWaveClear;
+	float waveTimer;
+	int waveNum;
 	
+	bool isGameClear;
+
+	int score;
+	bool isGameOver;
+
 public:
 	GameScene();
 	virtual void Init(SceneManager* sceneManager);
@@ -51,4 +65,5 @@ public:
 	void CreateWalls();
 	int CreateBackGround();
 	void CreateZombies(int count);
+	void NextStage();
 };
